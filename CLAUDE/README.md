@@ -20,8 +20,9 @@
 **1. VLA 的瓶頸是「重複讀小模型的權重」，不是算力。**
 π0 的 action expert 只佔 **9% FLOPs**，卻佔 Jetson AGX Thor 上 **56% 的延遲**：它用 M = 51 的 GEMM 跑 10 步，每步重讀 622 MB 權重，算術強度只有 ~60 FLOP/B。GR00T（DiT 21% FLOPs → 64% 延遲）、SmolVLA（12% → 67%）都一樣。
 
-**2. 這些「迴圈權重」小到可以放進片上 SRAM。**
+**2. 這些「迴圈權重」小到可以考慮放進片上 SRAM。**
 FP8 下 SmolVLA expert 97 MB、π0 expert 311 MB、GR00T DiT 415 MB（FP4 再減半）。若常駐片上，π0 跑 10 步只比 1 步多 3%（41.9 → 21.3 ms）。LLM 的 15 GB 權重不可能做到這點。
+（修訂：256 MB SRAM 在 N5 級約 70–90 mm²，是需要權衡的選項而非預設；若系統本來就做 best-of-K 候選，權重讀取會被攤提，常駐需求隨之消失。見 [08 §8.4](docs/08-cross-review-with-gpt.md)。）
 
 **3. VLA 的 KV cache 小、固定、用完即丟。**
 GR00T 0.7 MB、SmolVLA 4.9 MB、π0 15 MB（MQA），對比 Llama-3.1-8B 在 128K context 的 17 GB。不需要 PagedAttention、offload 或任何 LLM 式 KV 管理。
@@ -37,6 +38,18 @@ DreamZero 級（14B、7 Hz）即使 1 步取樣也需要 ~1.5 PFLOP/s 持續算�
 
 **7. 三者落在 roofline 的三個位置。**
 LLM decode（AI ≈ 1）、VLA 迴圈（AI ≈ 50）、影片 DiT（AI > 2,500）。一顆同時服務 VLA 與世界模型的晶片，必須同時處理頻寬瓶頸與算力瓶頸。
+（修訂：瓶頸是「階段 × 硬體」的組合而非模型類別的屬性——同一個 VLM prefill 在 H100 上算力受限、在 Thor 上頻寬受限。見 [08 §8.4](docs/08-cross-review-with-gpt.md)。）
+
+## 第二輪：LLM 加速器技巧的可移植性（2026-10-12）
+
+把 2026 年以前約 60 項 LLM / 擴散模型加速論文與技巧寫成分析模型上的變換，套到 12 個 workload：
+
+- **低精度是唯一對所有類別都有效的技巧**（FP8 2×、FP4 2.6–4×）。
+- **LLM serving 的招牌技巧（PagedAttention、continuous batching、KV 量化、PIM attention）對 VLA 幾乎無效**（1.00–1.01×）。
+- **權重頻寬技巧對 VLA 有效，對影片世界模型無效**；影片世界模型要靠擴散模型的步數蒸餾與跨步重用（Cambricon-D、EXION、TeaCache）。
+- **與 GPT 研究的交會**：flow VLA 的頻寬瓶頸讓「policy 產生多個候選、world model 評分」幾乎免費——Thor 上 16 個候選只比 1 個多 25% 時間。
+
+![techniques](figures/techniques_heatmap_thor.png)
 
 ![roofline](figures/roofline_stages.png)
 
@@ -51,6 +64,8 @@ LLM decode（AI ≈ 1）、VLA 迴圈（AI ≈ 50）、影片 DiT（AI > 2,500�
 | [04 · 計算負載](docs/04-compute-loading.md) | FLOPs、算術強度、注意力佔比、即時性、步數敏感度 |
 | [05 · 與 LLM 的本質差異](docs/05-vs-llm.md) | 十個層面：任務、生成範式、輸入、記憶、時間、批次、計算、數值、系統、目標 |
 | [06 · 對 ASIC 設計的含義](docs/06-asic-implications.md) | 七條設計結論與一份邊緣晶片粗略規格 |
+| [07 · LLM 加速器論文與技巧的可用性](docs/07-llm-accelerator-techniques.md) | 硬體論文（transformer/低精度/PIM/SRAM-first/擴散加速器）與軟體技巧目錄，量化每個技巧對每類模型的效果 |
+| [08 · 與 GPT 研究的交叉審查](docs/08-cross-review-with-gpt.md) | 一致處、以真實模型代入 GPT 公式、回應 GPT 的保留並修正本資料夾的說法 |
 | [references](docs/references.md) | 原始碼版本、論文 |
 
 ## 數據與圖表
@@ -59,8 +74,10 @@ LLM decode（AI ≈ 1）、VLA 迴圈（AI ≈ 50）、影片 DiT（AI > 2,500�
 |---|---|
 | [`results/results.md`](results/results.md) | 每個 workload 的總量與每個階段的分解（自動產生） |
 | [`results/sensitivity.md`](results/sensitivity.md) | 精度、步數、context 長度、SRAM 容量的敏感度 |
+| [`results/techniques.md`](results/techniques.md) | 每個加速技巧在每個 workload 上的 roofline 加速倍數（Thor / H100） |
+| [`results/decision_system.md`](results/decision_system.md) | GPT 公式的真實模型代入；policy 候選 + world model 評分的成本 |
 | [`results/summary.csv`](results/summary.csv)、[`results/stages.csv`](results/stages.csv) | 機器可讀版本 |
-| [`figures/`](figures/) | roofline、流量組成、延遲 vs 預算、常駐狀態、步數 vs SRAM |
+| [`figures/`](figures/) | roofline、流量組成、延遲 vs 預算、常駐狀態、步數 vs SRAM、技巧熱圖 |
 
 ## 重現
 
@@ -68,13 +85,15 @@ LLM decode（AI ≈ 1）、VLA 迴圈（AI ≈ 50）、影片 DiT（AI > 2,500�
 pip install matplotlib
 python analysis/run_all.py      # results/*.md, *.csv, figures/*.png
 python analysis/sensitivity.py  # results/sensitivity.md, figures/pi0_steps_sram.png
+python analysis/techniques.py   # results/techniques.md, figures/techniques_heatmap_*.png
+python analysis/decision_system.py  # results/decision_system.md
 ```
 
 模型與 workload 定義在 [`analysis/models.py`](analysis/models.py)，假設值以 `# ASSUMPTION` 標註；改完重跑即可。
 
 ## 重要限制
 
-- 延遲是**理想 roofline 下限**，實際通常 ×1.5–4；小 M GEMM 的真實利用率更差，所以「VLA 迴圈受頻寬限制」的結論在真實硬體上只會更明顯。
+- 延遲是**理想 roofline 下限**；「實際約 ×1.5–4」是未經本研究量測的經驗範圍；小 M GEMM 的真實利用率更差，所以「VLA 迴圈受頻寬限制」的結論在真實硬體上只會更明顯。
 - Jetson AGX Thor / Orin 的 BF16 峰值是由官方稀疏低精度數字推導的估計值。
 - DreamZero 的片段大小、Matrix-Game 3.0 的片段組成與 DiT 規格為假設（程式碼內 config 與 README 敘述不一致，詳見 [01 §8](docs/01-model-catalog.md)）。
 - 未模擬 VAE、文字編碼器、前處理與主機傳輸。

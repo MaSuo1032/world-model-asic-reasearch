@@ -114,6 +114,12 @@ class Pass:
     attn_frac: float = 1.0
     ctx_kv_precomputed: bool = True
     self_attn_layers: Optional[int] = None   # if only some layers do self-attn
+    # ---- technique knobs (all default to the unmodified model; see techniques.py) ----
+    attn_scale: float = 1.0      # multiplier on attention FLOPs (sparse/windowed attn, INT8 attn speedup)
+    gemm_scale: float = 1.0      # multiplier on projection/FFN FLOPs (2:4 sparsity, cross-step reuse)
+    wbytes_scale: float = 1.0    # multiplier on weight bytes (sparsity w/ metadata)
+    weight_resident: bool = False  # weights fetched from DRAM once, reused across `repeat`
+    kv_scale: float = 1.0        # multiplier on KV/ctx bytes (KV quantization, PIM offload -> 0)
 
     # ---- FLOPs ----
     def flops(self) -> float:
@@ -131,7 +137,7 @@ class Pass:
             cross += 4 * B * Nq * self.n_ctx * s.attn_width * s.cross_attn_layers
             if not self.ctx_kv_precomputed:
                 cross += 2 * B * self.n_ctx * (2 * d_ctx * s.kv_width) * s.cross_attn_layers
-        return (proj + attn + cross) * self.repeat
+        return (proj * self.gemm_scale + (attn + cross) * self.attn_scale) * self.repeat
 
     # ---- Bytes ----
     def weight_bytes(self, bpw: float) -> float:
@@ -139,7 +145,8 @@ class Pass:
         w = s.gemm_params_on_query_tokens() + s.extra_params
         if s.cross_attn_layers and not self.ctx_kv_precomputed:
             w = s.params
-        return w * bpw * self.repeat
+        reps = 1 if self.weight_resident else self.repeat
+        return w * bpw * reps * self.wbytes_scale
 
     def kv_bytes(self, bpa: float) -> float:
         s = self.stack
@@ -149,7 +156,7 @@ class Pass:
         ctx = 0.0
         if s.cross_attn_layers and self.n_ctx:
             ctx = 2 * self.n_ctx * s.kv_width * s.cross_attn_layers * bpa * self.batch
-        return (rd + wr + ctx) * self.repeat
+        return (rd + wr + ctx) * self.repeat * self.kv_scale
 
     def act_bytes(self, bpa: float) -> float:
         s = self.stack
