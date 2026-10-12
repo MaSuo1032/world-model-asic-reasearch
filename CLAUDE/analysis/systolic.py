@@ -34,12 +34,24 @@ def map_dims(M, N, K, df):
     raise ValueError(df)
 
 
-def gemm_cycles(M, N, K, R, C, df, cores=1):
+def gemm_cycles(M, N, K, R, C, df, cores=1, par=1):
+    """Cycles for `par` independent same-shape GEMMs that may share the cores (e.g. the heads x batch
+    attention matmuls of ONE layer; GPT review R5). par=1 reproduces the original serial model."""
     sr, sc, t = map_dims(M, N, K, df)
     folds = math.ceil(sr / R) * math.ceil(sc / C)
     a, b, c = COEF[df]
     per_fold = t + a * R + b * C + c
-    return math.ceil(folds / cores) * per_fold
+    return math.ceil(folds * par / cores) * per_fold
+
+
+def _unpack(g):
+    """GEMM entry = (name, M, N, K, count[, par]); count must be a multiple of par (par = same-layer independents)."""
+    name, M, N, K, cnt = g[:5]
+    par = g[5] if len(g) > 5 else 1
+    return name, M, N, K, cnt, par
+
+
+GROUPED = True   # schedule same-layer independent GEMMs together (set False to reproduce the round-3 serial model)
 
 
 def ideal_cycles(M, N, K, R, C, cores=1):
@@ -85,11 +97,13 @@ def transformer_gemms(n_q, n_kv, d, heads, hd, kv_heads, ff, layers, gated=True,
         g += [("fc1", M, ff, d, layers), ("fc2", M, d, ff, layers)]
     self_layers = layers - (cross_layers if cross_replaces else 0)
     if n_kv:
-        g += [("qk", n_q, n_kv, hd, heads * self_layers * batch), ("pv", n_q, hd, n_kv, heads * self_layers * batch)]
+        g += [("qk", n_q, n_kv, hd, heads * self_layers * batch, heads * batch),
+              ("pv", n_q, hd, n_kv, heads * self_layers * batch, heads * batch)]
     if cross_layers and n_ctx:
         if not cross_replaces:
             g += [("xq", M, aw, d, cross_layers), ("xo", M, d, aw, cross_layers)]
-        g += [("xqk", n_q, n_ctx, hd, heads * cross_layers * batch), ("xpv", n_q, hd, n_ctx, heads * cross_layers * batch)]
+        g += [("xqk", n_q, n_ctx, hd, heads * cross_layers * batch, heads * batch),
+              ("xpv", n_q, hd, n_ctx, heads * cross_layers * batch, heads * batch)]
     return g
 
 
@@ -127,17 +141,25 @@ CONFIGS = [
 ]
 
 
+def _group_cycles(g, R, C, df, cores):
+    _, M, N, K, cnt, par = _unpack(g)
+    if not GROUPED:
+        par_eff = 1
+    else:
+        par_eff = par
+    return gemm_cycles(M, N, K, R, C, df, cores, par_eff) * (cnt // par_eff)
+
+
 def stage_util(gemms, R, C, df, cores):
-    cyc = sum(gemm_cycles(M, N, K, R, C, df, cores) * cnt for _, M, N, K, cnt in gemms)
-    ideal = sum(ideal_cycles(M, N, K, R, C, cores) * cnt for _, M, N, K, cnt in gemms)
+    cyc = sum(_group_cycles(g, R, C, df, cores) for g in gemms)
+    ideal = sum(ideal_cycles(*_unpack(g)[1:4], R, C, cores) * _unpack(g)[4] for g in gemms)
     return cyc, ideal / cyc
 
 
 def best_df(gemms, R, C, cores):
     """Per-GEMM choice of dataflow (a reconfigurable array) vs fixed dataflow."""
-    cyc = sum(min(gemm_cycles(M, N, K, R, C, df, cores) for df in ("os", "ws", "is")) * cnt
-              for _, M, N, K, cnt in gemms)
-    ideal = sum(ideal_cycles(M, N, K, R, C, cores) * cnt for _, M, N, K, cnt in gemms)
+    cyc = sum(min(_group_cycles(g, R, C, df, cores) for df in ("os", "ws", "is")) for g in gemms)
+    ideal = sum(ideal_cycles(*_unpack(g)[1:4], R, C, cores) * _unpack(g)[4] for g in gemms)
     return cyc, ideal / cyc
 
 
@@ -151,6 +173,19 @@ if __name__ == "__main__":
                        f"{df.upper()}: a={COEF[df][0]}, b={COEF[df][1]}, c={COEF[df][2]} "
                        f"(max error {e[0]*100:.3f}% over {e[1]} runs, {e[2]} non-square)"
                        for df, e in errs.items()) + "\n")
+    hold = os.path.join(RES, "scalesim_holdout.csv")
+    if os.path.exists(hold):
+        herr = []
+        for r in csv.DictReader(open(hold)):
+            R_, C_ = map(int, r["array"].split("x"))
+            herr.append(abs(gemm_cycles(int(r["M"]), int(r["N"]), int(r["K"]), R_, C_, r["dataflow"])
+                            - int(r["cycles"])) / int(r["cycles"]))
+        out.append(f"**Held-out check (GPT review R8)**: {len(herr)} SCALE-Sim runs never used for fitting "
+                   "(ragged shapes, K as small as 48, a 48x24 array, Flex-π's 32x3072x1024 action GEMM): "
+                   f"max error {max(herr)*100:.3f}% (each prediction is off by one cycle).\n")
+    out.append("Evidence levels: single-array GEMM cycles = SCALE-Sim-calibrated (fitted + held-out); multi-core "
+               "configurations = analytical extrapolation (folds spread over cores, no inter-core communication, "
+               "same-layer attention heads x batch scheduled together, layers sequential).\n")
     out.append("## Compute-array utilization by stage (16,384 MACs in every configuration)\n")
     hdr = "| Stage | Family | " + " | ".join(f"{n} {df.upper()}" for n, *_ in CONFIGS[:3] for df in ("ws", "os")) + \
           " | best config + per-GEMM dataflow |"

@@ -30,7 +30,7 @@ Runs the experiments proposed in `CLAUDE/reviews/pre2026-llm-acceleration-review
 |---|---|---|
 | **E1-latent** | TD-MPC2 MPPI planner latency vs model size and candidate count K; op counts; `torch.compile` (CUDA graphs) effect | any GPU |
 | **E3(ii)** | Q-ensemble head subsampling: speedup and bit-exact equality | any GPU |
-| **E1-VLA** | openpi π0 / π0.5 best-of-K with a **shared prefix**: does K=16 cost ≤ 30% more than K=1? | **L4 or A100 recommended** (T4 has no bf16 tensor cores) |
+| **E1-VLA** | openpi π0 / π0.5 best-of-K with the **prefix computed once** (KV replicated per candidate, not physically shared): does K=16 cost ≤ 30% more than K=1? | **L4 or A100 recommended** (T4 has no bf16 tensor cores) |
 | **E3(i)** | cosine similarity of the action expert's outputs between consecutive flow steps (π0.5-DROID weights) | ≥ 24 GB GPU memory (A100/L4) |
 
 **How to run:** `Runtime → Change runtime type → GPU`, then `Runtime → Run all`. Results land in `/content/results/` and are zipped for download at the end (optionally pushed to a branch of the repo).
@@ -71,7 +71,7 @@ code("""
 """)
 
 md("""
-## E1-VLA: openpi π0 / π0.5 best-of-K with a shared prefix (JAX)
+## E1-VLA: openpi π0 / π0.5 best-of-K, prefix computed once + replicated KV (JAX)
 
 Installs the minimal JAX stack openpi's model code needs (not the full training stack). First run takes a few minutes for XLA compilation per (steps, K) shape.
 """)

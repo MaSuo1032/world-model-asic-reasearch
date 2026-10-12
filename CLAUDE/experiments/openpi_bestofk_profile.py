@@ -16,8 +16,9 @@ E3(i) step-to-step similarity (needs trained weights):
 See CLAUDE/experiments/colab_experiments.ipynb for a ready-to-run Colab version.
 
 The shared-prefix sampler is a copy of Pi0.sample_actions (openpi commit 215abfb)
-with the prefix KV cache tiled along the batch axis; built-in checks confirm it
-reproduces sample_actions exactly.
+with the prefix KV cache replicated along the batch axis; built-in checks confirm it
+reproduces sample_actions within --atol/--rtol, and the script ABORTS before timing if
+they fail or produce non-finite values.
 """
 import argparse
 import csv
@@ -81,7 +82,9 @@ def make_samplers(model):
         return x0
 
     def best_of_k(observation, noise, num_steps):
-        """One prefix pass, K = noise.shape[0] candidate chunks."""
+        """Prefix computed ONCE, then its KV is REPLICATED along the batch axis (jnp.repeat) for K candidates.
+        This is 'shared prefix computation', not physically shared KV storage/reads (GPT review R6);
+        whether XLA elides the copy must be checked from HLO / peak memory (reported as peak_bytes)."""
         K = noise.shape[0]
         obs, pm, kv = prefix(observation)
         tile = lambda x: jnp.repeat(x, K, axis=0)  # noqa: E731
@@ -142,6 +145,8 @@ def main():
     ap.add_argument("--K", type=int, nargs="+", default=[1, 4, 16])
     ap.add_argument("--reps", type=int, default=10)
     ap.add_argument("--warmup", type=int, default=2)
+    ap.add_argument("--atol", type=float, default=1e-3)
+    ap.add_argument("--rtol", type=float, default=2e-2, help="relative to max |action| of the reference")
     ap.add_argument("--out", default="openpi_bestofk_profile.csv")
     a = ap.parse_args()
     sys.path.insert(0, os.path.join(a.openpi, "src"))
@@ -171,6 +176,15 @@ def main():
                                                                                     noise=noise4[i:i + 1]))))
                    for i in range(4))
     print(f"check K=1 vs sample_actions: max|diff|={err_k1:.3e};  check row-wise K=4: max|diff|={err_rows:.3e}")
+    # GPT review R7: correctness gates run BEFORE timing; failures abort instead of producing a normal CSV.
+    # bf16 kernels with a different batch size may reorder reductions, so exact equality is not required;
+    # the tolerance is relative to the action scale.
+    scale = float(jnp.max(jnp.abs(ref))) + 1e-6
+    tol = a.atol + a.rtol * scale
+    finite = bool(jnp.all(jnp.isfinite(mine))) and bool(jnp.all(jnp.isfinite(batch4)))
+    if not finite or err_k1 > tol or err_rows > tol:
+        sys.exit(f"CORRECTNESS CHECK FAILED (finite={finite}, err_k1={err_k1:.3e}, err_rows={err_rows:.3e}, "
+                 f"tol={tol:.3e}); no timing reported.")
 
     # ---- E3(i): step-to-step similarity of expert activations ----
     if a.similarity:
@@ -203,7 +217,10 @@ def main():
             noise = jax.random.normal(jax.random.key(K), (K, H, D))
             t = bench(f, (obs, noise, s), a.reps, a.warmup)
             base = base or t
-            rows.append(dict(steps=s, K=K, total_ms=round(t * 1e3, 2), prefix_ms=round(t_prefix * 1e3, 2),
+            ms = getattr(jax.devices()[0], "memory_stats", lambda: None)() or {}
+            rows.append(dict(steps=s, K=K, mode="prefix-once + replicated-KV",
+                             peak_bytes=ms.get("peak_bytes_in_use", ""),
+                             total_ms=round(t * 1e3, 2), prefix_ms=round(t_prefix * 1e3, 2),
                              loop_ms=round((t - t_prefix) * 1e3, 2), rel_to_K1=round(t / base, 3),
                              device=str(jax.devices()[0]), check_k1=err_k1, check_rows=err_rows))
             print(rows[-1], flush=True)

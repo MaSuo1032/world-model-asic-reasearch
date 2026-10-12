@@ -4,22 +4,26 @@
 
 Per-fold cycle model `T + a·R + b·C + c` fitted to cycle-accurate SCALE-Sim runs (ideal memory bandwidth): OS: a=1, b=1, c=-2 (max error 0.003% over 10 runs, 2 non-square), WS: a=2, b=1, c=-2 (max error 0.002% over 10 runs, 2 non-square), IS: a=2, b=1, c=-2 (max error 0.003% over 10 runs, 2 non-square)
 
+**Held-out check (GPT review R8)**: 12 SCALE-Sim runs never used for fitting (ragged shapes, K as small as 48, a 48x24 array, Flex-π's 32x3072x1024 action GEMM): max error 0.057% (each prediction is off by one cycle).
+
+Evidence levels: single-array GEMM cycles = SCALE-Sim-calibrated (fitted + held-out); multi-core configurations = analytical extrapolation (folds spread over cores, no inter-core communication, same-layer attention heads x batch scheduled together, layers sequential).
+
 ## Compute-array utilization by stage (16,384 MACs in every configuration)
 
 | Stage | Family | 1x 128x128 WS | 1x 128x128 OS | 4x 64x64 WS | 4x 64x64 OS | 16x 32x32 WS | 16x 32x32 OS | best config + per-GEMM dataflow |
 |---|---|---|---|---|---|---|---|---|
-| π0 expert step (M=51) | VLA loop | 12% | 31% | 21% | 69% | 35% | 74% | 16x 32x32: 77% |
-| π0 best-of-16 expert step (M=816) | VLA loop | 37% | 56% | 54% | 81% | 70% | 87% | 16x 32x32: 91% |
-| SmolVLA expert step (M=50) | VLA loop | 10% | 25% | 19% | 55% | 33% | 61% | 16x 32x32: 64% |
-| GR00T DiT step (M=41) | VLA loop | 9% | 26% | 17% | 55% | 29% | 58% | 16x 32x32: 59% |
+| π0 expert step (M=51) | VLA loop | 12% | 31% | 21% | 70% | 35% | 75% | 16x 32x32: 77% |
+| π0 best-of-16 expert step (M=816) | VLA loop | 37% | 56% | 54% | 83% | 70% | 88% | 16x 32x32: 91% |
+| SmolVLA expert step (M=50) | VLA loop | 10% | 25% | 19% | 62% | 34% | 67% | 16x 32x32: 69% |
+| GR00T DiT step (M=41) | VLA loop | 9% | 26% | 18% | 59% | 30% | 61% | 16x 32x32: 62% |
 | π0 VLM prefill (M=816) | VLA front | 68% | 82% | 81% | 93% | 90% | 96% | 16x 32x32: 97% |
-| SigLIP ViT x3 (M=768) | VLA front | 62% | 78% | 75% | 87% | 85% | 93% | 16x 32x32: 94% |
+| SigLIP ViT x3 (M=768) | VLA front | 62% | 78% | 75% | 87% | 87% | 93% | 16x 32x32: 95% |
 | TD-MPC2-317M rollout step (M=512) | latent MPC | 57% | 91% | 72% | 95% | 84% | 98% | 16x 32x32: 98% |
 | TD-MPC2-5M rollout step (M=512) | latent MPC | 52% | 66% | 69% | 80% | 82% | 88% | 16x 32x32: 88% |
-| V-JEPA2-AC rollout h=1 (M=103,200) | latent MPC | 79% | 68% | 91% | 83% | 93% | 90% | 16x 32x32: 94% |
-| Matrix-Game-2 denoise (M=2,640) | video WM | 86% | 70% | 92% | 82% | 95% | 91% | 16x 32x32: 97% |
-| Llama-8B decode b=1 (M=1) | LLM | 0% | 1% | 1% | 1% | 1% | 2% | 16x 32x32: 3% |
-| Llama-8B decode b=64 (M=64) | LLM | 1% | 2% | 2% | 3% | 4% | 5% | 16x 32x32: 8% |
+| V-JEPA2-AC rollout h=1 (M=103,200) | latent MPC | 79% | 68% | 95% | 85% | 98% | 93% | 16x 32x32: 98% |
+| Matrix-Game-2 denoise (M=2,640) | video WM | 86% | 70% | 93% | 82% | 96% | 91% | 16x 32x32: 98% |
+| Llama-8B decode b=1 (M=1) | LLM | 0% | 1% | 1% | 1% | 1% | 3% | 16x 32x32: 3% |
+| Llama-8B decode b=64 (M=64) | LLM | 1% | 2% | 2% | 4% | 4% | 10% | 16x 32x32: 12% |
 
 ## π0 chunk on an edge chip: array shape × dataflow × weight residency
 
@@ -27,18 +31,18 @@ Per-fold cycle model `T + a·R + b·C + c` fitted to cycle-accurate SCALE-Sim ru
 
 | Config | Dataflow | expert step: compute ms | expert step: DRAM ms | chunk ms (streamed) | chunk ms (resident) |
 |---|---|---|---|---|---|
-| 1x 128x128 | WS | 1.28 | 2.35 | 47.7 | 38.0 |
-| 1x 128x128 | OS | 0.63 | 2.35 | 43.1 | 27.6 |
-| 1x 128x128 | per-GEMM best | 0.51 | 2.35 | 42.3 | 25.7 |
-| 4x 64x64 | WS | 0.71 | 2.35 | 43.6 | 28.8 |
-| 4x 64x64 | OS | 0.46 | 2.35 | 42.0 | 24.9 |
-| 4x 64x64 | per-GEMM best | 0.30 | 2.35 | 41.9 | 23.4 |
-| 16x 32x32 | WS | 0.43 | 2.35 | 42.2 | 24.8 |
-| 16x 32x32 | OS | 0.43 | 2.35 | 41.9 | 24.5 |
-| 16x 32x32 | per-GEMM best | 0.25 | 2.35 | 41.9 | 22.9 |
-| 1x 256x64 | WS | 1.84 | 2.35 | 52.2 | 47.6 |
-| 1x 256x64 | OS | 1.11 | 2.35 | 45.9 | 34.7 |
-| 1x 256x64 | per-GEMM best | 0.62 | 2.35 | 42.8 | 27.1 |
-| 1x 64x256 | WS | 1.28 | 2.35 | 48.0 | 38.3 |
-| 1x 64x256 | OS | 0.54 | 2.35 | 43.1 | 26.7 |
-| 1x 64x256 | per-GEMM best | 0.48 | 2.35 | 42.7 | 25.8 |
+| 1x 128x128 | WS | 1.25 | 2.35 | 46.4 | 36.4 |
+| 1x 128x128 | OS | 0.50 | 2.35 | 42.4 | 25.7 |
+| 1x 128x128 | per-GEMM best | 0.43 | 2.35 | 41.9 | 24.6 |
+| 4x 64x64 | WS | 0.69 | 2.35 | 42.6 | 27.7 |
+| 4x 64x64 | OS | 0.31 | 2.35 | 41.9 | 23.4 |
+| 4x 64x64 | per-GEMM best | 0.22 | 2.35 | 41.9 | 22.7 |
+| 16x 32x32 | WS | 0.42 | 2.35 | 41.9 | 24.4 |
+| 16x 32x32 | OS | 0.29 | 2.35 | 41.9 | 23.3 |
+| 16x 32x32 | per-GEMM best | 0.20 | 2.35 | 41.9 | 22.5 |
+| 1x 256x64 | WS | 1.82 | 2.35 | 50.8 | 45.9 |
+| 1x 256x64 | OS | 1.01 | 2.35 | 45.1 | 32.9 |
+| 1x 256x64 | per-GEMM best | 0.42 | 2.35 | 42.0 | 24.5 |
+| 1x 64x256 | WS | 1.26 | 2.35 | 46.9 | 37.0 |
+| 1x 64x256 | OS | 0.35 | 2.35 | 42.4 | 24.4 |
+| 1x 64x256 | per-GEMM best | 0.34 | 2.35 | 42.1 | 23.9 |

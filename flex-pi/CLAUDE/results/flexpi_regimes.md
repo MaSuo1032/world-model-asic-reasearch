@@ -35,6 +35,6 @@ FLOPs counted on the official model code (meta device, `flexpi_flops.py`); bytes
 
 | Stage | 1× 128×128 WS | 1× 128×128 OS | 16× 32×32 OS | 16× 32×32 per-GEMM best |
 |---|---|---|---|---|
-| prefill: 387 anchors × 5B trunk | 50% | 68% | 90% | 91% |
-| decode action-only: 32 tokens × 1B expert | 7% | 18% | 74% | 81% |
-| decode joint full: 774 tokens × 5B trunk | 66% | 76% | 93% | 95% |
+| prefill: 387 anchors × 5B trunk | 50% | 68% | 91% | 92% |
+| decode action-only: 32 tokens × 1B expert | 7% | 18% | 92% | 95% |
+| decode joint full: 774 tokens × 5B trunk | 66% | 76% | 94% | 95% |

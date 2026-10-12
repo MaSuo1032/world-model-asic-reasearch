@@ -42,7 +42,7 @@ LLM decode（AI ≈ 1）、VLA 迴圈（AI ≈ 50）、影片 DiT（AI > 2,500�
 
 ## 第三輪：週期級陣列模擬（2026-10-12）
 
-同樣 16,384 個 MAC：TPU 式 128×128 weight-stationary 陣列跑 VLA 動作迴圈（M=41–51）只有 **9–12%** 利用率；16 × 32×32 + 每個 GEMM 選 dataflow 有 59–77%，且對影片 DiT / latent MPC / prefill 仍有 88–98%。權重常駐片上只有搭配小陣列才有效（Thor 等級晶片上 π0 chunk 38.0 → 22.9 ms）。校準：30 個 SCALE-Sim 案例，誤差 < 0.01%。見 [09](docs/09-systolic-simulation-and-experiments.md)。
+同樣 16,384 個 MAC：TPU 式 128×128 weight-stationary 陣列跑 VLA 動作迴圈（M=41–51）只有 **9–12%** 利用率；16 × 32×32 + 每個 GEMM 選 dataflow 有 62–77%，且對影片 DiT / latent MPC / prefill 仍有 88–98%。權重常駐片上只有搭配小陣列才有效（Thor 等級晶片上 π0 chunk 36.4 → 22.5 ms）。校準：30 個擬合案例 + 12 個獨立驗證案例（最大誤差 0.057%）；多核心為解析外推。（已依 GPT 審查 R5、R8 修訂。）見 [09](docs/09-systolic-simulation-and-experiments.md)。
 
 ![systolic](figures/systolic_utilization.png)
 

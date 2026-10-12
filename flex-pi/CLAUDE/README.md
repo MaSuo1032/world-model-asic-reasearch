@@ -155,11 +155,11 @@ Flex-π 是一個 **60 億參數的 World Action Model**（華盛頓大學 + All
 
 | 階段 | M | 行為 | 128×128 WS 陣列利用率 | 16 × 32×32 + 可切換 dataflow |
 |---|---|---|---|---|
-| Prefill | 387 | 類似 LLM prefill | 50% | 91% |
-| Decode 只出動作 | **32** | 類似小 batch decode（頻寬受限） | **7%** | 81% |
+| Prefill | 387 | 類似 LLM prefill | 50% | 92% |
+| Decode 只出動作 | **32** | 類似小 batch decode（頻寬受限） | **7%** | 95% |
 | Decode 全串流 | 774（主幹）+ 32（專家） | 類似大 batch | 66% | 95% |
 
-（陣列利用率來自 CLAUDE/09 的 SCALE-Sim 校準模型，套用 Flex-π 的實際 GEMM 形狀。）
+（陣列利用率來自 CLAUDE/09 的 SCALE-Sim 校準模型，套用 Flex-π 的實際 GEMM 形狀；已依 GPT 審查 R5 讓同層 attention heads 平行排程。M=32 剛好填滿 32 列的陣列，所以小陣列在這裡特別有效。）
 
 所以 batch=1 帶來的影響主要在系統層面：
 

@@ -24,6 +24,10 @@ SHAPES = {                       # name: (M, N, K)  -- real layer shapes
 }
 ARRAYS = [(32, 32), (128, 128)]
 EXTRA = [("pi0_expert_up", 16, 64), ("pi0_expert_up", 64, 16)]   # non-square: separates R and C terms
+# HOLDOUT (GPT review R8): never used for fitting; ragged shapes, small reductions, other array sizes
+HOLDOUT = [("ragged_33x200x72", (33, 200, 72), 32, 32), ("small_k_17x1000x48", (17, 1000, 48), 16, 64),
+           ("flexpi_act_32x3072x1024", (32, 3072, 1024), 64, 64), ("odd_130x77x300", (130, 77, 300), 48, 24)]
+HOLDOUT_OUT = os.path.join(ROOT, "results", "scalesim_holdout.csv")
 DATAFLOWS = ["os", "ws", "is"]
 
 CFG = """[general]
@@ -97,7 +101,30 @@ def cases(only_extra=False):
         yield (sname, *SHAPES[sname], h, w)
 
 
+def run_holdout():
+    done = set()
+    if os.path.exists(HOLDOUT_OUT):
+        done = {(r["shape"], r["array"], r["dataflow"]) for r in csv.DictReader(open(HOLDOUT_OUT))}
+    new = not os.path.exists(HOLDOUT_OUT)
+    with open(HOLDOUT_OUT, "a", newline="") as fh:
+        wr = csv.DictWriter(fh, ["shape", "M", "N", "K", "array", "dataflow", "cycles", "util_pct", "map_eff_pct"])
+        if new:
+            wr.writeheader()
+        for sname, (M, N, K), h, w in HOLDOUT:
+            for df in DATAFLOWS:
+                if (sname, f"{h}x{w}", df) in done:
+                    continue
+                r = run_one(sname, M, N, K, h, w, df)
+                wr.writerow(dict(shape=sname, M=M, N=N, K=K, array=f"{h}x{w}", dataflow=df, cycles=r["cycles"],
+                                 util_pct=round(r["util"], 3), map_eff_pct=round(r["map_eff"], 3)))
+                fh.flush()
+                print("HOLDOUT OK", sname, h, w, df, r, flush=True)
+
+
 if __name__ == "__main__":
+    if "--holdout" in sys.argv:
+        run_holdout()
+        sys.exit(0)
     only_extra = "--extra" in sys.argv
     done = set()
     if os.path.exists(OUT):
