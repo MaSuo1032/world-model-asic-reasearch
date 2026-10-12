@@ -45,6 +45,7 @@ CLAUDE 內原有相對路徑保持不變。從 repository 根目錄執行：
 5. [完整來源清單](GPT/references.md)
 6. [2026 年以前 LLM 加速研究及可移植性](GPT/06-pre2026-llm-acceleration-survey.md)
 7. [移植實驗與 Claude 審查焦點](GPT/07-transfer-and-experiments.md)
+8. [World Model 運算六問：參數、prefill/decode、權重與完整流程](GPT/08-world-model-compute-six-questions.md)
 
 ## GitHub 協作
 

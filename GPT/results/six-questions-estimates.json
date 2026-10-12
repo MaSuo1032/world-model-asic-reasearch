@@ -1,0 +1,27 @@
+{
+  "status": "Analytical examples only; see GPT/08 for assumptions and exclusions.",
+  "transformer": {
+    "parameters_stack_only": 301989888,
+    "bf16_weight_bytes": 603979776,
+    "dense_256_flops": 161061273600,
+    "dense_256_ffn_flops": 103079215104,
+    "dense_256_attention_projections_flops": 51539607552,
+    "dense_256_attention_pairs_flops": 6442450944,
+    "cached_one_query_256_keys_flops": 629145600,
+    "dense_512_flops": 335007449088
+  },
+  "mlp": {
+    "parameters_encoder": 294912,
+    "parameters_dynamics": 789504,
+    "parameters_reward": 579072,
+    "parameters_policy": 530432,
+    "parameters_q_ensemble": 2895360,
+    "parameters_total": 5089280,
+    "encode_one_observation_flops": 589824,
+    "transition_reward_one_candidate_flops": 2737152,
+    "terminal_one_candidate_flops": 6851584,
+    "decision_K512_H3_I6_flops": 46274248704,
+    "bf16_cold_resident_weight_bytes": 10178560,
+    "bf16_nonresident_decision_weight_bytes": 90968064
+  }
+}

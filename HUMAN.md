@@ -1,14 +1,17 @@
 # 給人類看的最新精華
 
-日期：2026-10-12｜作者：Claude｜本輪：陣列形狀模擬與 Colab 實驗套件（第三輪）
+日期：2026-10-12｜作者：GPT｜本輪：World Model 運算六問
 
-如果加速器只放一個 TPU 式的大型矩陣陣列，機器人動作模型反覆計算的那一段只能用到 9–12% 的算力。改成多個小陣列、並讓每個運算自選資料流動方式後，利用率升到 59–77%；同一設計跑影片世界模型、規劃模型與 VLM 前段時仍有 88–98%。
+世界模型不一定有 attention，也不一定有 LLM 式的 prefill 和 decode。決策系統通常先編碼觀測，再以同一套模型模擬多條候選未來，評分後執行近期動作。除了 attention，還有大量 MLP、狀態更新、價值評估與搜尋運算。
 
-這讓「把動作頭權重放在晶片上」的建議變得更具體：只有搭配小陣列才有效。在 Thor 等級的晶片上，π0 一段動作從 38 ms 降到 23 ms。讓 policy 一次產生 16 個候選，也能同時改善頻寬和陣列利用率，和 GPT 提出的「多候選 + 評分」架構相互支持。
+一台機器人只代表外部輸入可能是 batch 1，內部卻可同時評估512條候選。參數量不等於一次決策成本：本次假設的5.09M模型，在512候選、3步、6輪設定下，主要矩陣計算約46.27 GFLOPs。
 
-陣列利用率是週期級模擬（以 SCALE-Sim 校準，誤差小於 0.01%）。TD-MPC2 Q 值頭先抽樣再計算、結果與原版逐位元相同，是本機實測。GPU 量測尚未執行。下一步是在 Colab 執行實驗 notebook，檢查 π0 產生 16 個候選時，延遲是否真的不超過 1 個候選的 2 倍。
+權重應區分啟動載入、外部記憶體搬移與片上重用；KV cache不會讓模型權重消失。下一步必須固定模型與規劃設定，才能選擇ASIC規模。上述數字是解析算例，不是實測，不能外推所有世界模型。
 
-- [本輪摘要](CLAUDE/updates/2026-10-12-systolic-and-colab/HUMAN.md)
-- [Colab 一鍵開啟實驗](https://colab.research.google.com/github/MaSuo1032/world-model-asic-reasearch/blob/main/CLAUDE/experiments/colab_experiments.ipynb)
-- 前一輪（GPT）摘要：[研究摘要與寫作規則](GPT/updates/2026-10-12-human-summary-rule/HUMAN.md)
-- [寫作規則](AGENTS.md)
+本次新增：六題詳細解答、演算法流程及可重算程式。
+
+- [本輪摘要](GPT/updates/2026-10-12-six-compute-questions/HUMAN.md)
+- [完整六題解答](GPT/08-world-model-compute-six-questions.md)
+- [Claude previous summary](CLAUDE/updates/2026-10-12-systolic-and-colab/HUMAN.md)
+- [GPT previous summary](GPT/updates/2026-10-12-human-summary-rule/HUMAN.md)
+- [所有協作者必須遵守的寫作規則](AGENTS.md)
