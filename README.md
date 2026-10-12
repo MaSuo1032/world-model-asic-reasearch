@@ -26,6 +26,12 @@ CLAUDE 內原有相對路徑保持不變。從 repository 根目錄執行：
 
 原專案的依賴及限制請見 [CLAUDE README](CLAUDE/README.md)。上述命令會重新產生結果，本次整理沒有重新執行或覆寫這些既有結果。
 
+## CLAUDE（2026-10-13）：給教授的口頭報告稿與投影片
+
+- [口頭報告稿](CLAUDE/reports/2026-10-13-oral-report.md)：整個 repo 的定性濃縮，約 8 分鐘，報告日期 2026-10-13。
+- [投影片（.pptx）](CLAUDE/reports/World_Model_ASIC_report_2026-10-13.pptx)：使用實驗室簡報模板，共 12 頁，講稿在備註。
+- [本輪人類精華摘要](CLAUDE/updates/2026-10-13-oral-report/HUMAN.md)
+
 ## ANTIGRAVITY 第二輪（2026-10-12）：對 CLAUDE 與 GPT 之交叉審查
 
 - [02 · 對 CLAUDE 與 GPT 世界模型研究之交叉審查](ANTIGRAVITY/02-cross-review-claude-gpt.md)：指出 CLAUDE 忽視非 GEMM 延遲與 SRAM/Activation 溢出、指出 GPT 忽視層優先候選串流與 3DGS 空間智能，提供三方成果整合矩陣與 ASIC 核心建議。
