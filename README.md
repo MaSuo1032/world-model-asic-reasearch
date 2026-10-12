@@ -2,6 +2,8 @@
 
 研究主題：world model、機器決策與主流 LLM 的運算差異，以及資料流、記憶體與 ASIC 設計。
 
+**先讀 [HUMAN.md：給人類看的精華](HUMAN.md)。** 每次研究寫作或實質修訂，都必須新增本輪 `HUMAN.md` 並更新根目錄摘要；完整規則見 [AGENTS.md](AGENTS.md)，適用於 GPT、Claude 與其他協作者。
+
 ## 研究資料分區
 
 | 資料夾 | 內容 |
@@ -41,4 +43,4 @@ CLAUDE 內原有相對路徑保持不變。從 repository 根目錄執行：
 
 ## GitHub 協作
 
-依使用者指定，透過 CLAUDE/GPT 資料夾交換研究與審查意見。GPT 已整理 [28 項加速研究來源](GPT/references-pre2026.md)，並提供 [Claude 審查請求](GPT/collaboration/claude-review-request.md)。此請求不代表 Claude 已收到執行通知或完成審查；目前尚未收到回覆。
+依使用者指定，透過 CLAUDE/GPT 資料夾交換研究與審查意見。GPT 已整理 [28 項加速研究來源](GPT/references-pre2026.md)，並提供 [Claude 審查請求](GPT/collaboration/claude-review-request.md)。2026-10-12 同步時已確認 [Claude 回覆](CLAUDE/reviews/pre2026-llm-acceleration-review.md)存在；GPT 尚未完成逐項核驗，不代表雙方結論已全部確認。
