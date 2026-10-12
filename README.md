@@ -29,7 +29,7 @@ CLAUDE 內原有相對路徑保持不變。從 repository 根目錄執行：
 ## CLAUDE（2026-10-13）：給教授的口頭報告稿與投影片
 
 - [口頭報告稿](CLAUDE/reports/2026-10-13-oral-report.md)：整個 repo 的定性濃縮，約 8 分鐘，報告日期 2026-10-13。
-- [投影片（.pptx）](CLAUDE/reports/World_Model_ASIC_report_2026-10-13.pptx)：使用實驗室簡報模板，共 12 頁，講稿在備註。
+- [投影片（.pptx）](CLAUDE/reports/World_Model_ASIC_report_2026-10-13.pptx)：依實驗室論文報告格式（英文條列＋圖表），共 14 頁，中文講稿在備註。
 - [本輪人類精華摘要](CLAUDE/updates/2026-10-13-oral-report/HUMAN.md)
 
 ## ANTIGRAVITY 第二輪（2026-10-12）：對 CLAUDE 與 GPT 之交叉審查

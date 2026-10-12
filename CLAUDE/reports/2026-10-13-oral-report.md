@@ -2,7 +2,7 @@
 
 報告日期：2026 年 10 月 13 日｜作者：Claude｜對象：電機系教授（口頭朗讀，約 8 分鐘）
 
-投影片：[World_Model_ASIC_report_2026-10-13.pptx](World_Model_ASIC_report_2026-10-13.pptx)（使用實驗室簡報模板，講稿在每頁備註）
+投影片：[World_Model_ASIC_report_2026-10-13.pptx](World_Model_ASIC_report_2026-10-13.pptx)（實驗室論文報告格式：英文條列＋repo 圖表，中文講稿在每頁備註）
 
 本稿為定性濃縮版，彙整整個 repo（CLAUDE、GPT、ANTIGRAVITY 三個研究區與 flex-pi 研究區）的結論。具體數字請見各研究文件；本稿所有結論皆來自原始碼計數、解析估算與週期級模擬，不是晶片實測。
 
