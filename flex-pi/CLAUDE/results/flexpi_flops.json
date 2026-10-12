@@ -1,0 +1,113 @@
+{
+ "params": {
+  "visual_trunk_total": 4999787712,
+  "visual_trunk_blocks": 4909701120,
+  "action_expert_total": 1020900366,
+  "action_expert_blocks": 1008015360,
+  "per_trunk_block": 163656704,
+  "per_action_block": 33600512,
+  "trunk_block_breakdown": {
+   "self_attn": 37767168,
+   "cross_attn": 37767168,
+   "ffn": 88097792,
+   "modulation+norms": 24576
+  },
+  "action_block_breakdown": {
+   "self_attn": 12599296,
+   "cross_attn": 12599296,
+   "ffn": 8393728,
+   "modulation+norms": 8192
+  },
+  "dinov3_vitb16": 85641216,
+  "wan22_vae_encoder": 149637088,
+  "wan22_vae_decoder": 555051580
+ },
+ "prefill_anchor": [
+  3562623959040,
+  {
+   "self_attn_qkvo": 876525649920,
+   "cross_attn_q_o": 438262824960,
+   "cross_attn_kv_on_text": 146087608320,
+   "ffn": 2045226516480,
+   "attention_scores_sdpa": 56521359360,
+   "conv": 0,
+   "unattributed": 0
+  }
+ ],
+ "decode_action_only_step": [
+  105374810112,
+  {
+   "self_attn_qkvo": 24159191040,
+   "cross_attn_q_o": 12079595520,
+   "cross_attn_kv_on_text": 48695869440,
+   "ffn": 16106127360,
+   "attention_scores_sdpa": 4334026752,
+   "conv": 0,
+   "unattributed": 0
+  }
+ ],
+ "decode_joint_rgb_step": [
+  2409871441920,
+  {
+   "self_attn_qkvo": 567740989440,
+   "cross_attn_q_o": 283870494720,
+   "cross_attn_kv_on_text": 194783477760,
+   "ffn": 1284463656960,
+   "attention_scores_sdpa": 79012823040,
+   "conv": 0,
+   "unattributed": 0
+  },
+  240
+ ],
+ "decode_joint_rgb_pointmap_step": [
+  4608617349120,
+  {
+   "self_attn_qkvo": 1111322787840,
+   "cross_attn_q_o": 555661393920,
+   "cross_attn_kv_on_text": 194783477760,
+   "ffn": 2552821186560,
+   "attention_scores_sdpa": 194028503040,
+   "conv": 0,
+   "unattributed": 0
+  },
+  480
+ ],
+ "decode_joint_full_step": [
+  7359956090880,
+  {
+   "self_attn_qkvo": 1777210490880,
+   "cross_attn_q_o": 888605245440,
+   "cross_attn_kv_on_text": 194783477760,
+   "ffn": 4106559160320,
+   "attention_scores_sdpa": 392797716480,
+   "conv": 0,
+   "unattributed": 0
+  },
+  774
+ ],
+ "encode_dino_3cams": [
+  107592855552,
+  {
+   "other_linear": 102431195136,
+   "attention_scores_sdpa": 4468027392,
+   "conv": 693633024,
+   "unattributed": 0
+  }
+ ],
+ "encode_vae_rgb_first_frame": [
+  571214069760,
+  {
+   "attention_scores_sdpa": 589824000,
+   "conv": 570624245760,
+   "unattributed": 0
+  }
+ ],
+ "decode_vae_rgb_9frames": [
+  20883787038720,
+  {
+   "attention_scores_sdpa": 2831155200,
+   "conv": 20880955883520,
+   "unattributed": 0
+  }
+ ]
+}
