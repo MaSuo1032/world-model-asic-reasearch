@@ -1,0 +1,47 @@
+{
+  "reviewed_commit": "231df78150c3570c1ccb472a6aa53c03d8bab49f",
+  "evidence": "Analytical recomputation and logical witness, not GPU or silicon measurements",
+  "fit_on_existing_calibration_rows": {
+    "os": [
+      2.87364579441938e-05,
+      10,
+      2
+    ],
+    "ws": [
+      1.7477934108188412e-05,
+      10,
+      2
+    ],
+    "is": [
+      2.791502665885046e-05,
+      10,
+      2
+    ]
+  },
+  "same_layer_parallel_schedule": [
+    {
+      "batch": 1,
+      "array": "16 x 32x32",
+      "original_cycles": 20485376,
+      "grouped_same_layer_heads_cycles": 17969408,
+      "original_utilization": 0.027192861873758137,
+      "grouped_utilization": 0.031000242189392103
+    },
+    {
+      "batch": 64,
+      "array": "16 x 32x32",
+      "original_cycles": 459483648,
+      "grouped_same_layer_heads_cycles": 298461696,
+      "original_utilization": 0.07759053919585839,
+      "grouped_utilization": 0.11945112045466631
+    }
+  ],
+  "zero_head_wrong_indices_still_equal": true,
+  "bf16_weight_capacity_MB": {
+    "20M": 40,
+    "200M": 400,
+    "317M": 634
+  },
+  "candidate_state_MiB_K512_S256_D1024_BF16": 256.0,
+  "activation_example": "Whole slice is 256 MiB; tiling may reduce live SRAM, so this is not a minimum SRAM requirement"
+}

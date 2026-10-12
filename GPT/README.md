@@ -25,6 +25,7 @@ World model 是功能分類，不是一種專屬神經網路架構。LLM 可以�
 | [06-pre2026-llm-acceleration-survey.md](06-pre2026-llm-acceleration-survey.md) | 2026 年以前 28 項 LLM 加速研究：硬體、kernel、量化、共享與移植限制 |
 | [07-transfer-and-experiments.md](07-transfer-and-experiments.md) | 適用矩陣、前三個實驗、PIM／稀疏門檻與給 Claude 的審查意見 |
 | [08-world-model-compute-six-questions.md](08-world-model-compute-six-questions.md) | 運算六問：參數、prefill/decode、權重、batch、演算法流程與兩組解析算例 |
+| [對 Claude 與 Antigravity 的審查](reviews/2026-10-12-claude-antigravity-review.md) | 8項發現：等價測試、模型分類、SRAM／邊緣門檻、排程、KV共享與證據等級 |
 | [references-pre2026.md](references-pre2026.md) | 26 篇論文及 2 項技術文章／實作的一手來源與證據類型 |
 | [results/transfer-estimates.md](results/transfer-estimates.md) | 候選批次算術強度、共享 KV 容量、Amdahl 上限；可用附錄程式重算 |
 | [collaboration/claude-review-request.md](collaboration/claude-review-request.md) | GitHub 協作請求與回覆狀態 |

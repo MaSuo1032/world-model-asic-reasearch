@@ -1,16 +1,17 @@
-# 給人類看的最新精華
+# 給人類看的最新精華：審查 Claude 與 Antigravity
 
-日期：2026-10-12｜作者：Antigravity｜本輪：對 CLAUDE 與 GPT 世界模型研究之交叉審查
+日期：2026-10-12｜作者：GPT｜本次新增：8項審查發現、可重算反例與修正順序。
 
-CLAUDE 的「多核小陣列優於單一大陣列」結論獲得強烈支持，但其忽視了非 GEMM 運算的阿姆達爾定律（Amdahl's Law）延遲瓶頸，以及多候選擴張時的 Activation/SRAM 溢出風險；GPT 的決策成本公式精闢，但將權重讀取簡化為全放或每步重讀，忽略了「層優先候選串流」能在有限 SRAM 下完全攤銷權重。在邊緣端，以 V-JEPA 2 為代表的 Token 級世界模型做在線 MPC 在物理算力上不可行（需近 20 PFLOPS），邊緣晶片必須錨定於向量型潛在模型（$\le 20$M）。
+兩份研究都有可用方向，但目前不能直接作為晶片規格。Claude的Q-head等價測試用了輸出退化的初始化模型，可能無法抓到抽錯head；陣列模型也漏了同層heads間的平行排程。一個batch-64算例補上後，理想利用率由7.76%變成11.95%，仍非硬體實測。
 
-避免硬體架構師掉入兩大陷阱：一是誤以為加速 GEMM 就解決了控制延遲，結果被歸一化、調製與排序拖慢；二是誤把資料中心級別的視訊 Token 模型當作邊緣 ASIC 的在線規格，導致開出不切實際的算力與面積預算。建議在模擬器中加入非 GEMM 運算延遲，並驗證 16~32MB SRAM 下採用層優先排程時之記憶體流量。本輪分析屬於文獻歸納與資料流理論推導，非實體晶片量測。
+Antigravity把逐幀擴散的Oasis套成逐token解碼，並提出「邊緣模型只能≤20M」「16–32MB SRAM是甜蜜點」等缺乏充分依據的結論。這些會誤導迭代次數、頻寬與容量估算。
 
-本次新增：Antigravity 對 CLAUDE 與 GPT 之交叉審查、三方結論矩陣與 ASIC 核心建議。
+建議先修正等價測試與模型分類，再補排程及記憶體量測。批次化、非矩陣運算和activation溢出仍是值得研究的方向。本輪完成程式查核、官方來源核對與解析重算，未重跑完整模型、GPU或實體晶片；問題尚待原作者修正。
 
-- [本輪摘要：交叉審查（Antigravity）](ANTIGRAVITY/updates/2026-10-12-cross-review-claude-gpt/HUMAN.md)
-- [完整交叉審查報告（Antigravity）](ANTIGRAVITY/02-cross-review-claude-gpt.md)
-- [上一輪：推論六問與硬體分析（Antigravity）](ANTIGRAVITY/01-world-model-compute-and-hardware-analysis.md)
-- [GPT previous summary: 運算六問](GPT/updates/2026-10-12-six-compute-questions/HUMAN.md)
-- [Claude previous summary: 週期級模擬與實驗](CLAUDE/updates/2026-10-12-systolic-and-colab/HUMAN.md)
-- [所有協作者必須遵守的寫作規則](AGENTS.md)
+[完整審查與逐項位置](GPT/reviews/2026-10-12-claude-antigravity-review.md)｜[重算程式](GPT/analysis/review_20261012_checks.py)｜[結果](GPT/results/review-20261012-checks.json)
+
+- [本輪摘要](GPT/updates/2026-10-12-review-claude-antigravity/HUMAN.md)
+- [上一輪 Antigravity 摘要](ANTIGRAVITY/updates/2026-10-12-cross-review-claude-gpt/HUMAN.md)
+- [GPT 運算六問摘要](GPT/updates/2026-10-12-six-compute-questions/HUMAN.md)
+- [Claude 第三輪摘要](CLAUDE/updates/2026-10-12-systolic-and-colab/HUMAN.md)
+- [寫作規則](AGENTS.md)
