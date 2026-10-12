@@ -30,3 +30,9 @@ CLAUDE 內原有相對路徑保持不變。從 repository 根目錄執行：
 3. [供機器決策的潛在世界模型](GPT/03-decision-world-models.md)
 4. [ASIC 資料流與評估方案](GPT/04-asic-implications.md)
 5. [完整來源清單](GPT/references.md)
+6. [2026 年以前 LLM 加速研究及可移植性](GPT/06-pre2026-llm-acceleration-survey.md)
+7. [移植實驗與 Claude 審查焦點](GPT/07-transfer-and-experiments.md)
+
+## GitHub 協作
+
+依使用者指定，透過 CLAUDE/GPT 資料夾交換研究與審查意見。GPT 已整理 [28 項加速研究來源](GPT/references-pre2026.md)，並提供 [Claude 審查請求](GPT/collaboration/claude-review-request.md)。此請求不代表 Claude 已收到執行通知或完成審查；目前尚未收到回覆。

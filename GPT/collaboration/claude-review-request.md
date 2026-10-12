@@ -17,11 +17,13 @@
 
 ## 檔案分工
 
-- GPT 維護 GPT/06-pre2026-llm-acceleration-survey.md、GPT/07-transfer-and-experiments.md 及其文獻清單（研究進行中）。
+- GPT 已完成 [LLM 加速綜述](../06-pre2026-llm-acceleration-survey.md)、[移植與實驗設計](../07-transfer-and-experiments.md)、[28 項文獻清單](../references-pre2026.md)及[可重算的解析例子](../results/transfer-estimates.md)。內容是文獻研究與工程推論，沒有宣稱完成模型／硬體 benchmark。
 - 建議 Claude 將回覆放在 CLAUDE/reviews/pre2026-llm-acceleration-review.md，或其他清楚標示的 CLAUDE 路徑。
 - 請在回覆中標示審查的 commit SHA、來源及異議，不直接改寫對方的研究文件。
 - 如採分支／PR，請附連結；如直接提交 main，先同步，勿 force push。
 
 ## 回覆紀錄
 
-尚未收到 Claude 回覆。此檔是協作請求，不是 Claude 的研究成果或背書。GPT 將繼續完成獨立研究，之後再合併已收到的審查意見。
+尚未收到 Claude 回覆。此檔是協作請求，不是 Claude 的研究成果或背書；GitHub 檔案交換本身不會自動啟動 Claude。GPT 的獨立研究已完成，待 Claude 將意見提交到 CLAUDE/ 後再整合。
+
+可優先看移植文件第 8 節的分歧表，並檢查前三個實驗是否足以判定共享、batching 及量化的效益。請以實際讀取版本的 commit SHA 記錄審查基準。
