@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-12",
+  "author": "GPT",
+  "artifact": "../flow.html",
+  "browser": "Chromium",
+  "preview_transport": "local HTTP; single HTML with embedded data and styles",
+  "desktop_viewport": [1440, 1050],
+  "mobile_viewport": [390, 844],
+  "passed": true,
+  "checks": [
+    "action-only visual tokens=387, total sequence positions=419",
+    "full-joint visual tokens=1161, total sequence positions=1193",
+    "full-joint group mask: middle layers 34 allowed cells, outer layers 10 allowed cells",
+    "30 layer controls and 32 action controls",
+    "expert switching changes hidden and FFN dimensions",
+    "all 32 teaching output rows match saved reference values",
+    "four-round values match handcalc_reference.json",
+    "action index and channel switching",
+    "denormalization and invalid standard deviation handling",
+    "downloaded HTML reloads with no duplicated controls",
+    "390px mobile view has no horizontal overflow in either mode",
+    "no JavaScript page errors",
+    "page requests no remote assets"
+  ],
+  "limits": [
+    "This verifies the visualization and teaching fixture, not pretrained Flex-pi inference.",
+    "Downloaded export was reloaded through local HTTP; platform browser policy blocks file URLs.",
+    "No real checkpoint, robot rollout or GPU benchmark was run.",
+    "Sites publishing helper scripts are unavailable in this environment; delivery is standalone HTML in the research repository."
+  ]
+}

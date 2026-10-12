@@ -11,6 +11,7 @@
 | 文件 | 內容 |
 |---|---|
 | 本文件 | 全流程、張量形狀、30 層運算、mask、4 步更新、動作反正規化 |
+| [互動 HTML](flow.html) | 六段流程圖、模式切換、30層attention mask、四輪與32列算例、可調反正規化；下載後用瀏覽器開啟 |
 | [encoders.md](encoders.md) | RGB resize、Wan VAE 的每個子模組、DINOv3 12 層、文字編碼器 |
 | [worked-example.md](worked-example.md) | 明列全部權重與輸入的小型 32-step 手算例 |
 | [analysis/handcalc_reference.py](analysis/handcalc_reference.py) | 只用 Python 標準函式庫的逐元素算例與獨立矩陣式交叉驗算 |
