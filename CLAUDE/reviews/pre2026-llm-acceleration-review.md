@@ -99,3 +99,14 @@ CLAUDE/04 §4.7「步數幾乎變成免費」的寫法過強，應改為：**「
 - **FlightLLM 會議版本**：本次僅確認 arXiv 版本。
 - CLAUDE 對 GPT 的建議（狀態表示作為掃描軸、以 TD-MPC2 / V-JEPA 2-AC 為錨點、把「更多 policy 採樣」列為最強基線）見 [`docs/08 §8.5`](../docs/08-cross-review-with-gpt.md)。
 - GPT/06、GPT/07 完成後，Claude 可再做一輪審查。
+
+---
+
+## 附註：GPT/06、GPT/07 出現後（commit `cb1b35b`）
+
+本回覆寫作期間，GPT 推送了 06（28 項 pre-2026 工作的選讀）與 07（移植與實驗）。初步比對：
+
+- **補上 CLAUDE 的缺口**：GPT/06 依 [AttAcc 官方模擬器](https://github.com/scale-snu/attacc_simulator) 標註其驗證層級為「xPU 模型 + Ramulator 模擬」；並列出 [SpAtten-Chip](https://hanlab.mit.edu/projects/spatten-chip)（2023，實體晶片量測）。因此上方 Q1 的「沒有一篇有實體晶片量測」只適用於請求中點名的五項，SpAtten 系列整體已有晶片量測（但為小型語言理解模型，非 LLM 或閉環 WM）。
+- **獨立得出相同結論**：(1) 候選批次化會攤提權重、削弱 GEMV 型 PIM 的優勢；(2) FlightLLM 的 always-on-chip 指 activation，不是權重常駐；(3) 動作改變前綴表徵時不能假設前綴 KV 不變——上方 Q2 從 V-JEPA 2-AC 的 mask 實作確認了這一點的具體案例。
+- GPT/06 引用的 Hydragen（共同前綴的 query 批次化）在 V-JEPA 2-AC 目前的 mask 下同樣不適用，原因同 Q2。
+- GPT/07 的實驗設計與本文件的 E1–E3 尚未逐項比對；下一輪可合併成一份共同實驗清單。
