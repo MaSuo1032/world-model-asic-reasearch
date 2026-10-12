@@ -8,12 +8,13 @@
 
 | 資料夾 | 內容 |
 |---|---|
+| [ANTIGRAVITY](ANTIGRAVITY/README.md) | 本次 Antigravity 研究：世界模型運算本質、推論機制與硬體架構深度剖析（六問解答） |
 | [CLAUDE](CLAUDE/README.md) | 本次整理前的全部既有檔案，原樣移入；包含分析程式、文件、圖表與結果 |
 | [GPT](GPT/README.md) | 本次 GPT 研究：2026 進展、LLM 比較、決策型潛在世界模型與 ASIC 分析 |
 
 整理日期：2026-10-12（Asia/Taipei）。
 
-CLAUDE 與 GPT 是依使用者指定的資料夾名稱區分研究來源，不表示彼此已交叉驗證或達成相同結論。既有內容的模型規格、估算與結論未在本次搬移中重新驗證。
+ANTIGRAVITY、CLAUDE 與 GPT 是依使用者指定的資料夾名稱區分研究來源，不表示彼此已交叉驗證或達成相同結論。既有內容的模型規格、估算與結論未在本次搬移中重新驗證。
 
 ## 既有分析的執行位置
 
@@ -24,6 +25,11 @@ CLAUDE 內原有相對路徑保持不變。從 repository 根目錄執行：
     python analysis/sensitivity.py
 
 原專案的依賴及限制請見 [CLAUDE README](CLAUDE/README.md)。上述命令會重新產生結果，本次整理沒有重新執行或覆寫這些既有結果。
+
+## ANTIGRAVITY 第一輪（2026-10-12）：世界模型運算本質與推論六問
+
+- [01 · World Model 運算本質、推論機制與硬體架構深度剖析](ANTIGRAVITY/01-world-model-compute-and-hardware-analysis.md)：剖析 Attention 以外運算、三層參數梯隊、自回歸 vs 擴散 vs 潛在 MPC 的 Prefill/Decode 負擔、權重搬移與外部頻寬牆、Batch=1 迷思與物理因果閉環演算法流程。
+- [Antigravity 本輪人類精華摘要](ANTIGRAVITY/updates/2026-10-12-world-model-compute-six-questions/HUMAN.md)
 
 ## CLAUDE 第二輪（2026-10-12）
 
