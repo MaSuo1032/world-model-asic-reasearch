@@ -40,6 +40,12 @@ DreamZero 級（14B、7 Hz）即使 1 步取樣也需要 ~1.5 PFLOP/s 持續算�
 LLM decode（AI ≈ 1）、VLA 迴圈（AI ≈ 50）、影片 DiT（AI > 2,500）。一顆同時服務 VLA 與世界模型的晶片，必須同時處理頻寬瓶頸與算力瓶頸。
 （修訂：瓶頸是「階段 × 硬體」的組合而非模型類別的屬性——同一個 VLM prefill 在 H100 上算力受限、在 Thor 上頻寬受限。見 [08 §8.4](docs/08-cross-review-with-gpt.md)。）
 
+## 第三輪：週期級陣列模擬（2026-10-12）
+
+同樣 16,384 個 MAC：TPU 式 128×128 weight-stationary 陣列跑 VLA 動作迴圈（M=41–51）只有 **9–12%** 利用率；16 × 32×32 + 每個 GEMM 選 dataflow 有 59–77%，且對影片 DiT / latent MPC / prefill 仍有 88–98%。權重常駐片上只有搭配小陣列才有效（Thor 等級晶片上 π0 chunk 38.0 → 22.9 ms）。校準：30 個 SCALE-Sim 案例，誤差 < 0.01%。見 [09](docs/09-systolic-simulation-and-experiments.md)。
+
+![systolic](figures/systolic_utilization.png)
+
 ## 第二輪：LLM 加速器技巧的可移植性（2026-10-12）
 
 把 2026 年以前約 60 項 LLM / 擴散模型加速論文與技巧寫成分析模型上的變換，套到 12 個 workload：
@@ -66,6 +72,7 @@ LLM decode（AI ≈ 1）、VLA 迴圈（AI ≈ 50）、影片 DiT（AI > 2,500�
 | [06 · 對 ASIC 設計的含義](docs/06-asic-implications.md) | 七條設計結論與一份邊緣晶片粗略規格 |
 | [07 · LLM 加速器論文與技巧的可用性](docs/07-llm-accelerator-techniques.md) | 硬體論文（transformer/低精度/PIM/SRAM-first/擴散加速器）與軟體技巧目錄，量化每個技巧對每類模型的效果 |
 | [08 · 與 GPT 研究的交叉審查](docs/08-cross-review-with-gpt.md) | 一致處、以真實模型代入 GPT 公式、回應 GPT 的保留並修正本資料夾的說法 |
+| [09 · 週期級陣列模擬與實驗套件](docs/09-systolic-simulation-and-experiments.md) | SCALE-Sim 校準的陣列利用率、陣列形狀 × dataflow × 權重常駐、E1–E3 實驗套件與 Colab notebook |
 | [reviews · 回覆 GPT 審查請求](reviews/pre2026-llm-acceleration-review.md) | SpAtten / DFX / FlightLLM / NeuPIMs / AttAcc 的驗證層級、對 latent MPC 的可移植性、三個可驗證實驗 |
 | [references](docs/references.md) | 原始碼版本、論文 |
 
@@ -77,6 +84,8 @@ LLM decode（AI ≈ 1）、VLA 迴圈（AI ≈ 50）、影片 DiT（AI > 2,500�
 | [`results/sensitivity.md`](results/sensitivity.md) | 精度、步數、context 長度、SRAM 容量的敏感度 |
 | [`results/techniques.md`](results/techniques.md) | 每個加速技巧在每個 workload 上的 roofline 加速倍數（Thor / H100） |
 | [`results/decision_system.md`](results/decision_system.md) | GPT 公式的真實模型代入（V-JEPA 2-AC、TD-MPC2）；policy 候選 + world model 評分的成本 |
+| [`results/systolic.md`](results/systolic.md)、[`results/scalesim_validation.csv`](results/scalesim_validation.csv) | 陣列利用率（週期級模擬）與 SCALE-Sim 校準資料 |
+| [`experiments/`](experiments/README.md) | 可執行的 E1–E3 實驗套件與 [Colab notebook](https://colab.research.google.com/github/MaSuo1032/world-model-asic-reasearch/blob/main/CLAUDE/experiments/colab_experiments.ipynb) |
 | [`results/summary.csv`](results/summary.csv)、[`results/stages.csv`](results/stages.csv) | 機器可讀版本 |
 | [`figures/`](figures/) | roofline、流量組成、延遲 vs 預算、常駐狀態、步數 vs SRAM、技巧熱圖 |
 
@@ -88,6 +97,8 @@ python analysis/run_all.py      # results/*.md, *.csv, figures/*.png
 python analysis/sensitivity.py  # results/sensitivity.md, figures/pi0_steps_sram.png
 python analysis/techniques.py   # results/techniques.md, figures/techniques_heatmap_*.png
 python analysis/decision_system.py  # results/decision_system.md
+python analysis/systolic.py         # results/systolic.md, figures/systolic_utilization.png
+python analysis/scalesim_validate.py  # (slow, optional) re-run SCALE-Sim calibration
 ```
 
 模型與 workload 定義在 [`analysis/models.py`](analysis/models.py)，假設值以 `# ASSUMPTION` 標註；改完重跑即可。

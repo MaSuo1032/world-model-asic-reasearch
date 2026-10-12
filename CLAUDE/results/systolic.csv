@@ -1,0 +1,241 @@
+stage,family,config,dataflow,util
+π0 expert step (M=51),VLA loop,1x 128x128,ws,0.1171
+π0 expert step (M=51),VLA loop,1x 128x128,os,0.3135
+π0 expert step (M=51),VLA loop,1x 128x128,is,0.2891
+π0 expert step (M=51),VLA loop,1x 128x128,best-per-gemm,0.3465
+π0 expert step (M=51),VLA loop,4x 64x64,ws,0.2104
+π0 expert step (M=51),VLA loop,4x 64x64,os,0.6902
+π0 expert step (M=51),VLA loop,4x 64x64,is,0.6578
+π0 expert step (M=51),VLA loop,4x 64x64,best-per-gemm,0.7416
+π0 expert step (M=51),VLA loop,16x 32x32,ws,0.3497
+π0 expert step (M=51),VLA loop,16x 32x32,os,0.7352
+π0 expert step (M=51),VLA loop,16x 32x32,is,0.7164
+π0 expert step (M=51),VLA loop,16x 32x32,best-per-gemm,0.7686
+π0 expert step (M=51),VLA loop,1x 256x64,ws,0.0801
+π0 expert step (M=51),VLA loop,1x 256x64,os,0.1488
+π0 expert step (M=51),VLA loop,1x 256x64,is,0.4958
+π0 expert step (M=51),VLA loop,1x 256x64,best-per-gemm,0.4958
+π0 expert step (M=51),VLA loop,1x 64x256,ws,0.1157
+π0 expert step (M=51),VLA loop,1x 64x256,os,0.583
+π0 expert step (M=51),VLA loop,1x 64x256,is,0.1446
+π0 expert step (M=51),VLA loop,1x 64x256,best-per-gemm,0.583
+π0 best-of-16 expert step (M=816),VLA loop,1x 128x128,ws,0.3687
+π0 best-of-16 expert step (M=816),VLA loop,1x 128x128,os,0.556
+π0 best-of-16 expert step (M=816),VLA loop,1x 128x128,is,0.501
+π0 best-of-16 expert step (M=816),VLA loop,1x 128x128,best-per-gemm,0.6284
+π0 best-of-16 expert step (M=816),VLA loop,4x 64x64,ws,0.5392
+π0 best-of-16 expert step (M=816),VLA loop,4x 64x64,os,0.8094
+π0 best-of-16 expert step (M=816),VLA loop,4x 64x64,is,0.7688
+π0 best-of-16 expert step (M=816),VLA loop,4x 64x64,best-per-gemm,0.8749
+π0 best-of-16 expert step (M=816),VLA loop,16x 32x32,ws,0.7014
+π0 best-of-16 expert step (M=816),VLA loop,16x 32x32,os,0.865
+π0 best-of-16 expert step (M=816),VLA loop,16x 32x32,is,0.8412
+π0 best-of-16 expert step (M=816),VLA loop,16x 32x32,best-per-gemm,0.9084
+π0 best-of-16 expert step (M=816),VLA loop,1x 256x64,ws,0.2685
+π0 best-of-16 expert step (M=816),VLA loop,1x 256x64,os,0.3496
+π0 best-of-16 expert step (M=816),VLA loop,1x 256x64,is,0.5718
+π0 best-of-16 expert step (M=816),VLA loop,1x 256x64,best-per-gemm,0.608
+π0 best-of-16 expert step (M=816),VLA loop,1x 64x256,ws,0.3547
+π0 best-of-16 expert step (M=816),VLA loop,1x 64x256,os,0.6784
+π0 best-of-16 expert step (M=816),VLA loop,1x 64x256,is,0.3315
+π0 best-of-16 expert step (M=816),VLA loop,1x 64x256,best-per-gemm,0.6784
+SmolVLA expert step (M=50),VLA loop,1x 128x128,ws,0.0998
+SmolVLA expert step (M=50),VLA loop,1x 128x128,os,0.2532
+SmolVLA expert step (M=50),VLA loop,1x 128x128,is,0.2246
+SmolVLA expert step (M=50),VLA loop,1x 128x128,best-per-gemm,0.2604
+SmolVLA expert step (M=50),VLA loop,4x 64x64,ws,0.1899
+SmolVLA expert step (M=50),VLA loop,4x 64x64,os,0.5458
+SmolVLA expert step (M=50),VLA loop,4x 64x64,is,0.505
+SmolVLA expert step (M=50),VLA loop,4x 64x64,best-per-gemm,0.5654
+SmolVLA expert step (M=50),VLA loop,16x 32x32,ws,0.3273
+SmolVLA expert step (M=50),VLA loop,16x 32x32,os,0.6099
+SmolVLA expert step (M=50),VLA loop,16x 32x32,is,0.5843
+SmolVLA expert step (M=50),VLA loop,16x 32x32,best-per-gemm,0.6406
+SmolVLA expert step (M=50),VLA loop,1x 256x64,ws,0.0689
+SmolVLA expert step (M=50),VLA loop,1x 256x64,os,0.1266
+SmolVLA expert step (M=50),VLA loop,1x 256x64,is,0.3272
+SmolVLA expert step (M=50),VLA loop,1x 256x64,best-per-gemm,0.3538
+SmolVLA expert step (M=50),VLA loop,1x 64x256,ws,0.0975
+SmolVLA expert step (M=50),VLA loop,1x 64x256,os,0.4149
+SmolVLA expert step (M=50),VLA loop,1x 64x256,is,0.121
+SmolVLA expert step (M=50),VLA loop,1x 64x256,best-per-gemm,0.4149
+GR00T DiT step (M=41),VLA loop,1x 128x128,ws,0.0939
+GR00T DiT step (M=41),VLA loop,1x 128x128,os,0.265
+GR00T DiT step (M=41),VLA loop,1x 128x128,is,0.2447
+GR00T DiT step (M=41),VLA loop,1x 128x128,best-per-gemm,0.2734
+GR00T DiT step (M=41),VLA loop,4x 64x64,ws,0.1719
+GR00T DiT step (M=41),VLA loop,4x 64x64,os,0.5497
+GR00T DiT step (M=41),VLA loop,4x 64x64,is,0.5185
+GR00T DiT step (M=41),VLA loop,4x 64x64,best-per-gemm,0.5585
+GR00T DiT step (M=41),VLA loop,16x 32x32,ws,0.2941
+GR00T DiT step (M=41),VLA loop,16x 32x32,os,0.5849
+GR00T DiT step (M=41),VLA loop,16x 32x32,is,0.5667
+GR00T DiT step (M=41),VLA loop,16x 32x32,best-per-gemm,0.5907
+GR00T DiT step (M=41),VLA loop,1x 256x64,ws,0.0639
+GR00T DiT step (M=41),VLA loop,1x 256x64,os,0.1318
+GR00T DiT step (M=41),VLA loop,1x 256x64,is,0.3867
+GR00T DiT step (M=41),VLA loop,1x 256x64,best-per-gemm,0.4154
+GR00T DiT step (M=41),VLA loop,1x 64x256,ws,0.0929
+GR00T DiT step (M=41),VLA loop,1x 64x256,os,0.4656
+GR00T DiT step (M=41),VLA loop,1x 64x256,is,0.1274
+GR00T DiT step (M=41),VLA loop,1x 64x256,best-per-gemm,0.4656
+π0 VLM prefill (M=816),VLA front,1x 128x128,ws,0.6792
+π0 VLM prefill (M=816),VLA front,1x 128x128,os,0.8202
+π0 VLM prefill (M=816),VLA front,1x 128x128,is,0.8066
+π0 VLM prefill (M=816),VLA front,1x 128x128,best-per-gemm,0.8755
+π0 VLM prefill (M=816),VLA front,4x 64x64,ws,0.8107
+π0 VLM prefill (M=816),VLA front,4x 64x64,os,0.9304
+π0 VLM prefill (M=816),VLA front,4x 64x64,is,0.9223
+π0 VLM prefill (M=816),VLA front,4x 64x64,best-per-gemm,0.9616
+π0 VLM prefill (M=816),VLA front,16x 32x32,ws,0.8962
+π0 VLM prefill (M=816),VLA front,16x 32x32,os,0.9551
+π0 VLM prefill (M=816),VLA front,16x 32x32,is,0.9507
+π0 VLM prefill (M=816),VLA front,16x 32x32,best-per-gemm,0.9712
+π0 VLM prefill (M=816),VLA front,1x 256x64,ws,0.5847
+π0 VLM prefill (M=816),VLA front,1x 256x64,os,0.702
+π0 VLM prefill (M=816),VLA front,1x 256x64,is,0.8169
+π0 VLM prefill (M=816),VLA front,1x 256x64,best-per-gemm,0.8592
+π0 VLM prefill (M=816),VLA front,1x 64x256,ws,0.6784
+π0 VLM prefill (M=816),VLA front,1x 64x256,os,0.8581
+π0 VLM prefill (M=816),VLA front,1x 64x256,is,0.7076
+π0 VLM prefill (M=816),VLA front,1x 64x256,best-per-gemm,0.8694
+SigLIP ViT x3 (M=768),VLA front,1x 128x128,ws,0.6183
+SigLIP ViT x3 (M=768),VLA front,1x 128x128,os,0.7818
+SigLIP ViT x3 (M=768),VLA front,1x 128x128,is,0.7089
+SigLIP ViT x3 (M=768),VLA front,1x 128x128,best-per-gemm,0.8119
+SigLIP ViT x3 (M=768),VLA front,4x 64x64,ws,0.7547
+SigLIP ViT x3 (M=768),VLA front,4x 64x64,os,0.8714
+SigLIP ViT x3 (M=768),VLA front,4x 64x64,is,0.8242
+SigLIP ViT x3 (M=768),VLA front,4x 64x64,best-per-gemm,0.8903
+SigLIP ViT x3 (M=768),VLA front,16x 32x32,ws,0.8515
+SigLIP ViT x3 (M=768),VLA front,16x 32x32,os,0.9258
+SigLIP ViT x3 (M=768),VLA front,16x 32x32,is,0.8985
+SigLIP ViT x3 (M=768),VLA front,16x 32x32,best-per-gemm,0.9363
+SigLIP ViT x3 (M=768),VLA front,1x 256x64,ws,0.4665
+SigLIP ViT x3 (M=768),VLA front,1x 256x64,os,0.7436
+SigLIP ViT x3 (M=768),VLA front,1x 256x64,is,0.5522
+SigLIP ViT x3 (M=768),VLA front,1x 256x64,best-per-gemm,0.749
+SigLIP ViT x3 (M=768),VLA front,1x 64x256,ws,0.553
+SigLIP ViT x3 (M=768),VLA front,1x 64x256,os,0.6648
+SigLIP ViT x3 (M=768),VLA front,1x 64x256,is,0.7089
+SigLIP ViT x3 (M=768),VLA front,1x 64x256,best-per-gemm,0.7339
+TD-MPC2-317M rollout step (M=512),latent MPC,1x 128x128,ws,0.5676
+TD-MPC2-317M rollout step (M=512),latent MPC,1x 128x128,os,0.914
+TD-MPC2-317M rollout step (M=512),latent MPC,1x 128x128,is,0.8709
+TD-MPC2-317M rollout step (M=512),latent MPC,1x 128x128,best-per-gemm,0.9272
+TD-MPC2-317M rollout step (M=512),latent MPC,4x 64x64,ws,0.7229
+TD-MPC2-317M rollout step (M=512),latent MPC,4x 64x64,os,0.9532
+TD-MPC2-317M rollout step (M=512),latent MPC,4x 64x64,is,0.9295
+TD-MPC2-317M rollout step (M=512),latent MPC,4x 64x64,best-per-gemm,0.9583
+TD-MPC2-317M rollout step (M=512),latent MPC,16x 32x32,ws,0.8395
+TD-MPC2-317M rollout step (M=512),latent MPC,16x 32x32,os,0.9766
+TD-MPC2-317M rollout step (M=512),latent MPC,16x 32x32,is,0.9619
+TD-MPC2-317M rollout step (M=512),latent MPC,16x 32x32,best-per-gemm,0.9772
+TD-MPC2-317M rollout step (M=512),latent MPC,1x 256x64,ws,0.4579
+TD-MPC2-317M rollout step (M=512),latent MPC,1x 256x64,os,0.8955
+TD-MPC2-317M rollout step (M=512),latent MPC,1x 256x64,is,0.8038
+TD-MPC2-317M rollout step (M=512),latent MPC,1x 256x64,best-per-gemm,0.8955
+TD-MPC2-317M rollout step (M=512),latent MPC,1x 64x256,ws,0.5563
+TD-MPC2-317M rollout step (M=512),latent MPC,1x 64x256,os,0.8781
+TD-MPC2-317M rollout step (M=512),latent MPC,1x 64x256,is,0.8709
+TD-MPC2-317M rollout step (M=512),latent MPC,1x 64x256,best-per-gemm,0.8985
+TD-MPC2-5M rollout step (M=512),latent MPC,1x 128x128,ws,0.52
+TD-MPC2-5M rollout step (M=512),latent MPC,1x 128x128,os,0.6627
+TD-MPC2-5M rollout step (M=512),latent MPC,1x 128x128,is,0.495
+TD-MPC2-5M rollout step (M=512),latent MPC,1x 128x128,best-per-gemm,0.6627
+TD-MPC2-5M rollout step (M=512),latent MPC,4x 64x64,ws,0.6923
+TD-MPC2-5M rollout step (M=512),latent MPC,4x 64x64,os,0.7952
+TD-MPC2-5M rollout step (M=512),latent MPC,4x 64x64,is,0.6722
+TD-MPC2-5M rollout step (M=512),latent MPC,4x 64x64,best-per-gemm,0.7952
+TD-MPC2-5M rollout step (M=512),latent MPC,16x 32x32,ws,0.8206
+TD-MPC2-5M rollout step (M=512),latent MPC,16x 32x32,os,0.8835
+TD-MPC2-5M rollout step (M=512),latent MPC,16x 32x32,is,0.8098
+TD-MPC2-5M rollout step (M=512),latent MPC,16x 32x32,best-per-gemm,0.8835
+TD-MPC2-5M rollout step (M=512),latent MPC,1x 256x64,ws,0.3938
+TD-MPC2-5M rollout step (M=512),latent MPC,1x 256x64,os,0.6117
+TD-MPC2-5M rollout step (M=512),latent MPC,1x 256x64,is,0.3717
+TD-MPC2-5M rollout step (M=512),latent MPC,1x 256x64,best-per-gemm,0.6117
+TD-MPC2-5M rollout step (M=512),latent MPC,1x 64x256,ws,0.52
+TD-MPC2-5M rollout step (M=512),latent MPC,1x 64x256,os,0.584
+TD-MPC2-5M rollout step (M=512),latent MPC,1x 64x256,is,0.5164
+TD-MPC2-5M rollout step (M=512),latent MPC,1x 64x256,best-per-gemm,0.584
+"V-JEPA2-AC rollout h=1 (M=103,200)",latent MPC,1x 128x128,ws,0.7931
+"V-JEPA2-AC rollout h=1 (M=103,200)",latent MPC,1x 128x128,os,0.6756
+"V-JEPA2-AC rollout h=1 (M=103,200)",latent MPC,1x 128x128,is,0.592
+"V-JEPA2-AC rollout h=1 (M=103,200)",latent MPC,1x 128x128,best-per-gemm,0.8123
+"V-JEPA2-AC rollout h=1 (M=103,200)",latent MPC,4x 64x64,ws,0.9088
+"V-JEPA2-AC rollout h=1 (M=103,200)",latent MPC,4x 64x64,os,0.8256
+"V-JEPA2-AC rollout h=1 (M=103,200)",latent MPC,4x 64x64,is,0.7687
+"V-JEPA2-AC rollout h=1 (M=103,200)",latent MPC,4x 64x64,best-per-gemm,0.9171
+"V-JEPA2-AC rollout h=1 (M=103,200)",latent MPC,16x 32x32,ws,0.9349
+"V-JEPA2-AC rollout h=1 (M=103,200)",latent MPC,16x 32x32,os,0.8997
+"V-JEPA2-AC rollout h=1 (M=103,200)",latent MPC,16x 32x32,is,0.8667
+"V-JEPA2-AC rollout h=1 (M=103,200)",latent MPC,16x 32x32,best-per-gemm,0.9392
+"V-JEPA2-AC rollout h=1 (M=103,200)",latent MPC,1x 256x64,ws,0.706
+"V-JEPA2-AC rollout h=1 (M=103,200)",latent MPC,1x 256x64,os,0.6365
+"V-JEPA2-AC rollout h=1 (M=103,200)",latent MPC,1x 256x64,is,0.4586
+"V-JEPA2-AC rollout h=1 (M=103,200)",latent MPC,1x 256x64,best-per-gemm,0.7406
+"V-JEPA2-AC rollout h=1 (M=103,200)",latent MPC,1x 64x256,ws,0.7631
+"V-JEPA2-AC rollout h=1 (M=103,200)",latent MPC,1x 64x256,os,0.5873
+"V-JEPA2-AC rollout h=1 (M=103,200)",latent MPC,1x 64x256,is,0.5968
+"V-JEPA2-AC rollout h=1 (M=103,200)",latent MPC,1x 64x256,best-per-gemm,0.7778
+"Matrix-Game-2 denoise (M=2,640)",video WM,1x 128x128,ws,0.8635
+"Matrix-Game-2 denoise (M=2,640)",video WM,1x 128x128,os,0.6997
+"Matrix-Game-2 denoise (M=2,640)",video WM,1x 128x128,is,0.6123
+"Matrix-Game-2 denoise (M=2,640)",video WM,1x 128x128,best-per-gemm,0.9158
+"Matrix-Game-2 denoise (M=2,640)",video WM,4x 64x64,ws,0.9221
+"Matrix-Game-2 denoise (M=2,640)",video WM,4x 64x64,os,0.8206
+"Matrix-Game-2 denoise (M=2,640)",video WM,4x 64x64,is,0.7582
+"Matrix-Game-2 denoise (M=2,640)",video WM,4x 64x64,best-per-gemm,0.9476
+"Matrix-Game-2 denoise (M=2,640)",video WM,16x 32x32,ws,0.9545
+"Matrix-Game-2 denoise (M=2,640)",video WM,16x 32x32,os,0.9057
+"Matrix-Game-2 denoise (M=2,640)",video WM,16x 32x32,is,0.8671
+"Matrix-Game-2 denoise (M=2,640)",video WM,16x 32x32,best-per-gemm,0.9717
+"Matrix-Game-2 denoise (M=2,640)",video WM,1x 256x64,ws,0.7087
+"Matrix-Game-2 denoise (M=2,640)",video WM,1x 256x64,os,0.6283
+"Matrix-Game-2 denoise (M=2,640)",video WM,1x 256x64,is,0.4681
+"Matrix-Game-2 denoise (M=2,640)",video WM,1x 256x64,best-per-gemm,0.7625
+"Matrix-Game-2 denoise (M=2,640)",video WM,1x 64x256,ws,0.7537
+"Matrix-Game-2 denoise (M=2,640)",video WM,1x 64x256,os,0.5856
+"Matrix-Game-2 denoise (M=2,640)",video WM,1x 64x256,is,0.5894
+"Matrix-Game-2 denoise (M=2,640)",video WM,1x 64x256,best-per-gemm,0.7843
+Llama-8B decode b=1 (M=1),LLM,1x 128x128,ws,0.0026
+Llama-8B decode b=1 (M=1),LLM,1x 128x128,os,0.0061
+Llama-8B decode b=1 (M=1),LLM,1x 128x128,is,0.0055
+Llama-8B decode b=1 (M=1),LLM,1x 128x128,best-per-gemm,0.0076
+Llama-8B decode b=1 (M=1),LLM,4x 64x64,ws,0.0052
+Llama-8B decode b=1 (M=1),LLM,4x 64x64,os,0.0124
+Llama-8B decode b=1 (M=1),LLM,4x 64x64,is,0.0118
+Llama-8B decode b=1 (M=1),LLM,4x 64x64,best-per-gemm,0.0125
+Llama-8B decode b=1 (M=1),LLM,16x 32x32,ws,0.0105
+Llama-8B decode b=1 (M=1),LLM,16x 32x32,os,0.022
+Llama-8B decode b=1 (M=1),LLM,16x 32x32,is,0.0214
+Llama-8B decode b=1 (M=1),LLM,16x 32x32,best-per-gemm,0.0272
+Llama-8B decode b=1 (M=1),LLM,1x 256x64,ws,0.0016
+Llama-8B decode b=1 (M=1),LLM,1x 256x64,os,0.0029
+Llama-8B decode b=1 (M=1),LLM,1x 256x64,is,0.009
+Llama-8B decode b=1 (M=1),LLM,1x 256x64,best-per-gemm,0.0099
+Llama-8B decode b=1 (M=1),LLM,1x 64x256,ws,0.0023
+Llama-8B decode b=1 (M=1),LLM,1x 64x256,os,0.0107
+Llama-8B decode b=1 (M=1),LLM,1x 64x256,is,0.0028
+Llama-8B decode b=1 (M=1),LLM,1x 64x256,best-per-gemm,0.0107
+Llama-8B decode b=64 (M=64),LLM,1x 128x128,ws,0.0105
+Llama-8B decode b=64 (M=64),LLM,1x 128x128,os,0.0161
+Llama-8B decode b=64 (M=64),LLM,1x 128x128,is,0.0129
+Llama-8B decode b=64 (M=64),LLM,1x 128x128,best-per-gemm,0.0304
+Llama-8B decode b=64 (M=64),LLM,4x 64x64,ws,0.0208
+Llama-8B decode b=64 (M=64),LLM,4x 64x64,os,0.0322
+Llama-8B decode b=64 (M=64),LLM,4x 64x64,is,0.0286
+Llama-8B decode b=64 (M=64),LLM,4x 64x64,best-per-gemm,0.0322
+Llama-8B decode b=64 (M=64),LLM,16x 32x32,ws,0.0413
+Llama-8B decode b=64 (M=64),LLM,16x 32x32,os,0.0464
+Llama-8B decode b=64 (M=64),LLM,16x 32x32,is,0.0444
+Llama-8B decode b=64 (M=64),LLM,16x 32x32,best-per-gemm,0.0776
+Llama-8B decode b=64 (M=64),LLM,1x 256x64,ws,0.0047
+Llama-8B decode b=64 (M=64),LLM,1x 256x64,os,0.0072
+Llama-8B decode b=64 (M=64),LLM,1x 256x64,is,0.0172
+Llama-8B decode b=64 (M=64),LLM,1x 256x64,best-per-gemm,0.0207
+Llama-8B decode b=64 (M=64),LLM,1x 64x256,ws,0.0071
+Llama-8B decode b=64 (M=64),LLM,1x 64x256,os,0.0234
+Llama-8B decode b=64 (M=64),LLM,1x 64x256,is,0.0065
+Llama-8B decode b=64 (M=64),LLM,1x 64x256,best-per-gemm,0.0234

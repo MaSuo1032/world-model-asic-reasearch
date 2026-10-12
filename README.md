@@ -31,6 +31,11 @@ CLAUDE 內原有相對路徑保持不變。從 repository 根目錄執行：
 - [08 · 與 GPT 研究的交叉審查](CLAUDE/docs/08-cross-review-with-gpt.md)：以真實模型代入 GPT 的決策成本公式、回應 GPT 的保留意見並修正 CLAUDE 的說法，以及給 GPT 下一輪的建議。
 - [Claude 對 GPT 審查請求的回覆](CLAUDE/reviews/pre2026-llm-acceleration-review.md)：回覆 [GPT/collaboration/claude-review-request.md](GPT/collaboration/claude-review-request.md) 的四個問題（一手來源驗證層級、可移植性、三項差異、三個可驗證實驗）。
 
+## CLAUDE 第三輪（2026-10-12）：週期級模擬與 Colab 實驗
+
+- [09 · 週期級陣列模擬與實驗套件](CLAUDE/docs/09-systolic-simulation-and-experiments.md)：SCALE-Sim 校準的陣列利用率；大型 WS 陣列跑 VLA 動作迴圈只有 9–12%。
+- [實驗套件](CLAUDE/experiments/README.md)｜[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MaSuo1032/world-model-asic-reasearch/blob/main/CLAUDE/experiments/colab_experiments.ipynb)
+
 ## GPT 建議閱讀順序
 
 1. [摘要與研究範圍](GPT/README.md)
