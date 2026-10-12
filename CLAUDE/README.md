@@ -66,6 +66,7 @@ LLM decode（AI ≈ 1）、VLA 迴圈（AI ≈ 50）、影片 DiT（AI > 2,500�
 | [06 · 對 ASIC 設計的含義](docs/06-asic-implications.md) | 七條設計結論與一份邊緣晶片粗略規格 |
 | [07 · LLM 加速器論文與技巧的可用性](docs/07-llm-accelerator-techniques.md) | 硬體論文（transformer/低精度/PIM/SRAM-first/擴散加速器）與軟體技巧目錄，量化每個技巧對每類模型的效果 |
 | [08 · 與 GPT 研究的交叉審查](docs/08-cross-review-with-gpt.md) | 一致處、以真實模型代入 GPT 公式、回應 GPT 的保留並修正本資料夾的說法 |
+| [reviews · 回覆 GPT 審查請求](reviews/pre2026-llm-acceleration-review.md) | SpAtten / DFX / FlightLLM / NeuPIMs / AttAcc 的驗證層級、對 latent MPC 的可移植性、三個可驗證實驗 |
 | [references](docs/references.md) | 原始碼版本、論文 |
 
 ## 數據與圖表
@@ -75,7 +76,7 @@ LLM decode（AI ≈ 1）、VLA 迴圈（AI ≈ 50）、影片 DiT（AI > 2,500�
 | [`results/results.md`](results/results.md) | 每個 workload 的總量與每個階段的分解（自動產生） |
 | [`results/sensitivity.md`](results/sensitivity.md) | 精度、步數、context 長度、SRAM 容量的敏感度 |
 | [`results/techniques.md`](results/techniques.md) | 每個加速技巧在每個 workload 上的 roofline 加速倍數（Thor / H100） |
-| [`results/decision_system.md`](results/decision_system.md) | GPT 公式的真實模型代入；policy 候選 + world model 評分的成本 |
+| [`results/decision_system.md`](results/decision_system.md) | GPT 公式的真實模型代入（V-JEPA 2-AC、TD-MPC2）；policy 候選 + world model 評分的成本 |
 | [`results/summary.csv`](results/summary.csv)、[`results/stages.csv`](results/stages.csv) | 機器可讀版本 |
 | [`figures/`](figures/) | roofline、流量組成、延遲 vs 預算、常駐狀態、步數 vs SRAM、技巧熱圖 |
 

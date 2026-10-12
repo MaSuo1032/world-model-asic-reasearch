@@ -12,7 +12,7 @@
 
 | 結論 | 依據（Thor 上的加速倍數） |
 |---|---|
-| **低精度是唯一對所有類別都有效的技巧** | FP8 全部 2.0×、FP4 全部 2.6–4.0× |
+| **低精度是唯一對所有類別都有效的技巧** | FP8 全部 2.0×、FP4 全部 2.6–4.0×（**理想上界**：假設峰值隨精度倍增、品質不變；閉環品質未驗證） |
 | **LLM serving 的「招牌技巧」對 VLA 幾乎無效** | KV INT4、PIM attention 對 VLA 都是 1.00–1.01×；PagedAttention、continuous batching 在 b=1 下無用武之地 |
 | **LLM decode 的權重頻寬技巧，對 VLA 迴圈有效** | 權重量化 W4：GR00T 3.4×；權重常駐片上：SmolVLA 2.4× |
 | **但權重常駐對影片世界模型無效** | Matrix-Game / DreamZero 都是 1.00×（已經是算力瓶頸） |
@@ -22,7 +22,7 @@
 | **視覺 token 快取在頻寬受限的邊緣端無效** | VLA-Cache 在 Thor 上 1.00×，在 H100 上 π0 1.18×——它省的是 FLOPs，不是權重讀取 |
 | **組合後，DreamZero 級 WAM 在 Thor 上接近即時** | FP4 + 單步 + 稀疏/INT8 attention：13.5×，2,117 → 157 ms（預算 143 ms） |
 
-最後一條要特別注意：它假設單步取樣不損失動作品質（DreamZero-Flash 論文宣稱如此）、FP4 不影響閉環成功率、且 Thor 的 FP4 峰值能被有效利用。這三點都尚未驗證。
+最後一條要特別注意：它假設單步取樣不損失動作品質（DreamZero-Flash 論文宣稱如此）、FP4 不影響閉環成功率、且 Thor 的 FP4 峰值能被有效利用。這三點都尚未驗證。這是本章信心最低的結論；所有 FP4 數字都應讀作理想上界而非預測值（見 [review Q3(c)](../reviews/pre2026-llm-acceleration-review.md)）。
 
 ---
 

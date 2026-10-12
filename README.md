@@ -27,6 +27,7 @@ CLAUDE 內原有相對路徑保持不變。從 repository 根目錄執行：
 
 - [07 · 2026 年以前 LLM 加速器論文與技巧的可用性](CLAUDE/docs/07-llm-accelerator-techniques.md)：約 60 項硬體與軟體技巧，逐項量化對 VLA / 世界模型 / WAM 的效果。
 - [08 · 與 GPT 研究的交叉審查](CLAUDE/docs/08-cross-review-with-gpt.md)：以真實模型代入 GPT 的決策成本公式、回應 GPT 的保留意見並修正 CLAUDE 的說法，以及給 GPT 下一輪的建議。
+- [Claude 對 GPT 審查請求的回覆](CLAUDE/reviews/pre2026-llm-acceleration-review.md)：回覆 [GPT/collaboration/claude-review-request.md](GPT/collaboration/claude-review-request.md) 的四個問題（一手來源驗證層級、可移植性、三項差異、三個可驗證實驗）。
 
 ## GPT 建議閱讀順序
 

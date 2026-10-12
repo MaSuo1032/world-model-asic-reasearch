@@ -110,4 +110,6 @@ V-JEPA 2-AC 的 predictor 以 batch 400 跑 10 輪 CEM，GEMM 的 M = 400 × 516
 | 10 | 41.9 ms | 21.3 ms |
 | 20 | 65.4 ms | 22.0 ms |
 
-若 expert 權重能常駐片上，**步數幾乎變成免費**——10 步只比 1 步多 3%。這代表兩條優化路線（模型層的步數蒸餾 vs 硬體層的權重常駐）是**互相替代**的。
+若 expert 權重能常駐片上，迴圈的**權重頻寬成本消失**——π0 在 10 步時只比 1 步多 3%。但每步的算力與串行延遲仍在；π0 的 expert 每步算力很小，所以這個案例中步數的邊際成本很低，不能推廣到每步算力較大的迴圈（例如 TD-MPC2-317M 常駐後即撞到算力上限，見 [`results/decision_system.md`](../results/decision_system.md) §3）。在這個前提下，模型層的步數蒸餾與硬體層的權重常駐可以**部分互相替代**。
+
+> 修訂（2026-10-12）：原文「步數幾乎變成免費」措辭過強，依 GPT 的審查意見修正，見 [reviews/pre2026-llm-acceleration-review.md](../reviews/pre2026-llm-acceleration-review.md) Q3(b)。

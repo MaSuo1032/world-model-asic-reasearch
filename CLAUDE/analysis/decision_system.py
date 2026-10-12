@@ -66,6 +66,47 @@ out.append("\nBecause the action expert is weight-bandwidth-bound at K=1 (AI ≈
            "costs only ~25% more policy time on Thor: the extra candidates ride on weight reads that were "
            "happening anyway. The scorer then dominates beyond K≈16.\n")
 
+# --- 3. Compact latent MLP anchor: TD-MPC2 (nicklashansen/tdmpc2, config.yaml + common/__init__.py)
+# planner: iterations=6, num_samples=512, num_pi_trajs=24, horizon=3; single-task (task_dim=0)
+# per rollout step: dynamics MLP + reward MLP; terminal: pi MLP + Q ensemble (ALL num_q heads computed,
+# 2 randomly kept -> world_model.py::Q). ASSUMPTION: action_dim=6 (DMControl walker-class).
+TDMPC2 = {5: dict(mlp=512, lat=512, nq=5), 48: dict(mlp=1792, lat=768, nq=5), 317: dict(mlp=4096, lat=1376, nq=8)}
+A_DIM, BINS, IT, NS, NPI, HZ = 6, 101, 6, 512, 24, 3
+
+
+def mlp_macs(i, h, o):          # mlp(in, [h, h], out): 3 linear layers
+    return i * h + h * h + h * o
+
+
+out.append("## 3. Compact latent anchor: TD-MPC2 planning (MPPI)\n")
+out.append("Settings from `tdmpc2/config.yaml`: iterations=6, num_samples=512, horizon=3, num_pi_trajs=24. "
+           "Terminal value runs the full Q ensemble (5 or 8 heads) and keeps 2 (`world_model.py::Q`). "
+           "Assumes single-task, action_dim=6.\n")
+out.append("| Model | C_transition (dyn+reward) | Terminal (pi + Q ensemble) | FLOPs / decision | Rollout weights BF16 | "
+           "Thor ms (weights re-read) | Thor ms (rollout weights on-chip) | Q heads discarded |")
+out.append("|---|---|---|---|---|---|---|---|")
+for size, c in TDMPC2.items():
+    h, L, nq = c["mlp"], c["lat"], c["nq"]
+    dyn, rew = mlp_macs(L + A_DIM, h, L), mlp_macs(L + A_DIM, h, BINS)
+    pi, q = mlp_macs(L, h, 2 * A_DIM), mlp_macs(L + A_DIM, h, BINS)
+    c_tr = 2 * (dyn + rew)
+    term = 2 * (pi + nq * q)
+    per_cand = HZ * c_tr + term
+    flops = IT * NS * per_cand
+    w_step = (dyn + rew) * 2                      # bytes (BF16), params == MACs per sample for MLPs
+    w_term = (pi + nq * q) * 2
+    bytes_nonres = IT * (HZ * w_step + w_term)    # weights re-read every dependent stage
+    bytes_res = HZ * 0 + w_step + w_term          # fetched once
+    t_nonres = max(flops / THOR.peak_flops, bytes_nonres / THOR.bw) * 1e3
+    t_res = max(flops / THOR.peak_flops, bytes_res / THOR.bw) * 1e3
+    out.append(f"| TD-MPC2-{size}M | {c_tr/1e6:.1f} MFLOP | {term/1e6:.1f} MFLOP | {flops/1e9:,.1f} GFLOP | "
+               f"{(w_step + w_term)/1e6:,.0f} MB | {t_nonres:.2f} | {t_res:.2f} | {(nq-2)/nq*100:.0f}% |")
+out.append("\nGPT/05's illustrative 40 MFLOP per transition sits between TD-MPC2-48M and -317M — a realistic value "
+           "for the compact-latent class. V-JEPA 2-AC's ~245 GFLOP per transition is **2,400–90,000× larger**: "
+           "the two must not share one hardware sizing. For TD-MPC2 the roofline time is tiny; the real floor "
+           "is the 6 × (3 + 1) = 24 dependent stages per decision (kernel launches / host sync), i.e. exactly "
+           "the overhead that megakernel-style execution targets.\n")
+
 with open(os.path.join(ROOT, "results", "decision_system.md"), "w") as fh:
     fh.write("\n".join(out) + "\n")
 print("\n".join(out))

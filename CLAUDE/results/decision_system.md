@@ -21,3 +21,15 @@
 
 Because the action expert is weight-bandwidth-bound at K=1 (AI ≈ 60), sampling 16 candidate chunks costs only ~25% more policy time on Thor: the extra candidates ride on weight reads that were happening anyway. The scorer then dominates beyond K≈16.
 
+## 3. Compact latent anchor: TD-MPC2 planning (MPPI)
+
+Settings from `tdmpc2/config.yaml`: iterations=6, num_samples=512, horizon=3, num_pi_trajs=24. Terminal value runs the full Q ensemble (5 or 8 heads) and keeps 2 (`world_model.py::Q`). Assumes single-task, action_dim=6.
+
+| Model | C_transition (dyn+reward) | Terminal (pi + Q ensemble) | FLOPs / decision | Rollout weights BF16 | Thor ms (weights re-read) | Thor ms (rollout weights on-chip) | Q heads discarded |
+|---|---|---|---|---|---|---|---|
+| TD-MPC2-5M | 2.7 MFLOP | 6.9 MFLOP | 46.3 GFLOP | 10 MB | 0.33 | 0.18 | 60% |
+| TD-MPC2-48M | 21.5 MFLOP | 57.0 MFLOP | 373.4 GFLOP | 79 MB | 2.67 | 1.44 | 60% |
+| TD-MPC2-317M | 101.9 MFLOP | 410.6 MFLOP | 2,199.9 GFLOP | 512 MB | 15.74 | 8.49 | 75% |
+
+GPT/05's illustrative 40 MFLOP per transition sits between TD-MPC2-48M and -317M — a realistic value for the compact-latent class. V-JEPA 2-AC's ~245 GFLOP per transition is **2,400–90,000× larger**: the two must not share one hardware sizing. For TD-MPC2 the roofline time is tiny; the real floor is the 6 × (3 + 1) = 24 dependent stages per decision (kernel launches / host sync), i.e. exactly the overhead that megakernel-style execution targets.
+
