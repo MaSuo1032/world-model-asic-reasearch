@@ -26,10 +26,15 @@ CLAUDE 內原有相對路徑保持不變。從 repository 根目錄執行：
 
 原專案的依賴及限制請見 [CLAUDE README](CLAUDE/README.md)。上述命令會重新產生結果，本次整理沒有重新執行或覆寫這些既有結果。
 
+## ANTIGRAVITY 第二輪（2026-10-12）：對 CLAUDE 與 GPT 之交叉審查
+
+- [02 · 對 CLAUDE 與 GPT 世界模型研究之交叉審查](ANTIGRAVITY/02-cross-review-claude-gpt.md)：指出 CLAUDE 忽視非 GEMM 延遲與 SRAM/Activation 溢出、指出 GPT 忽視層優先候選串流與 3DGS 空間智能，提供三方成果整合矩陣與 ASIC 核心建議。
+- [Antigravity 第二輪人類精華摘要（最新）](ANTIGRAVITY/updates/2026-10-12-cross-review-claude-gpt/HUMAN.md)
+
 ## ANTIGRAVITY 第一輪（2026-10-12）：世界模型運算本質與推論六問
 
 - [01 · World Model 運算本質、推論機制與硬體架構深度剖析](ANTIGRAVITY/01-world-model-compute-and-hardware-analysis.md)：剖析 Attention 以外運算、三層參數梯隊、自回歸 vs 擴散 vs 潛在 MPC 的 Prefill/Decode 負擔、權重搬移與外部頻寬牆、Batch=1 迷思與物理因果閉環演算法流程。
-- [Antigravity 本輪人類精華摘要](ANTIGRAVITY/updates/2026-10-12-world-model-compute-six-questions/HUMAN.md)
+- [Antigravity 第一輪人類精華摘要](ANTIGRAVITY/updates/2026-10-12-world-model-compute-six-questions/HUMAN.md)
 
 ## CLAUDE 第二輪（2026-10-12）
 

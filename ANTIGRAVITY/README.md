@@ -6,8 +6,12 @@
 
 ## 📑 建議閱讀順序
 
-1. **[給人類看的最新精華（HUMAN.md）](updates/2026-10-12-world-model-compute-six-questions/HUMAN.md)**：本輪推論六問與硬體意涵的 300 字白話精華。
-2. **[World Model 運算本質、推論機制與硬體架構深度剖析](01-world-model-compute-and-hardware-analysis.md)**：
+1. **[給人類看的最新精華（HUMAN.md）](updates/2026-10-12-cross-review-claude-gpt/HUMAN.md)**：本輪對 CLAUDE 與 GPT 交叉審查的 300 字白話精華。
+2. **[02 · 對 CLAUDE 與 GPT 世界模型研究之交叉審查](02-cross-review-claude-gpt.md)**：
+   * 指出 CLAUDE 忽視非 GEMM 運算之 Amdahl's Law 延遲瓶頸、Best-of-K 的 SRAM/Activation 溢出風險，以及 V-JEPA 2-AC Token 級模型在邊緣端不可行之事實。
+   * 指出 GPT 忽視「層優先候選串流（Layer-wise candidate streaming）」、3DGS 空間世界模型結構性缺位，以及複合誤差對長 Horizon 之懲罰。
+   * 提供三方視角對照矩陣與具體 ASIC 架構建議。
+3. **[01 · World Model 運算本質、推論機制與硬體架構深度剖析](01-world-model-compute-and-hardware-analysis.md)**：
    * Q1: Attention 以外的核心運算（Tokenizer, FFN, AdaLN 條件調製, 狀態轉移, 3DGS 渲染）。
    * Q2: 參數規模層級（4M~200M 輕量決策、1B~14B 具身基座、10B~32B+ 大型多模態）。
    * Q3: Prefill 與 Decode 在自回歸、擴散模型與潛在 MPC 中的真實計算負擔。
