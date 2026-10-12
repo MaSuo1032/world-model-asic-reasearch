@@ -16,6 +16,7 @@ World model 是功能分類，不是一種專屬神經網路架構。LLM 可以�
 
 | 文件 | 內容 |
 |---|---|
+| [Flex-π 從輸入到32個動作](../flex-pi/GPT/README.md) | 逐元素公式、編碼器附錄、attention mask、去噪與反正規化；附完整32列教學算例 |
 | [00-methodology.md](00-methodology.md) | 證據分級、研究範圍、重要限制 |
 | [01-progress-2026.md](01-progress-2026.md) | Genie、Waymo、V-JEPA、Cosmos、World Labs、Dreamer 等路線 |
 | [02-world-model-vs-llm.md](02-world-model-vs-llm.md) | 訓練、推論、平行性、記憶體與硬體瓶頸 |

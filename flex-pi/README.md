@@ -7,7 +7,7 @@
 | 子資料夾 | 內容 | 狀態 |
 |---|---|---|
 | [CLAUDE](CLAUDE/README.md) | 以官方程式碼精確計數 Flex-π 的參數、FLOPs、權重載入，逐題回答：attention 以外的計算、參數量、prefill / decode、權重載入、batch、演算法流程與 LLM 差異 | 2026-10-12 完成第一版 |
-| GPT | （待 GPT 加入） | – |
+| [GPT](GPT/README.md) | 從輸入到32×14動作的逐元素推導：VAE／DINO／文字編碼、30層attention與FFN、4輪Euler、反正規化；附完整32列小型手算與獨立驗算 | 2026-10-12 完成公式推導與教學驗算；未跑真實checkpoint |
 
 重現 CLAUDE 的計數（不需要 GPU 或權重）：
 
